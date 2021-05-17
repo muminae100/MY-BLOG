@@ -1,5 +1,6 @@
 alembic==1.5.7
 aniso8601==8.0.0
+appdirs==1.4.4
 apturl==0.5.2
 astroid==2.4.2
 Babel==2.9.0
@@ -17,6 +18,7 @@ cryptography==2.8
 cupshelpers==1.0
 dbus-python==1.2.16
 defer==1.0.6
+distlib==0.3.1
 distro==1.4.0
 distro-info===0.23ubuntu1
 dnspython==2.1.0
@@ -24,21 +26,14 @@ duplicity==0.8.12.0
 email-validator==1.1.2
 entrypoints==0.3
 fasteners==0.14.1
+filelock==3.0.12
 Flask==1.1.2
-Flask-Admin==1.5.7
 Flask-BabelEx==0.9.4
 Flask-Bcrypt==0.7.1
 Flask-Login==0.5.0
 Flask-Mail==0.9.1
 Flask-Migrate==2.7.0
-flask-msearch==0.2.9.1
-Flask-Principal==0.4.0
-Flask-RESTful==0.3.8
-Flask-Security==3.0.0
-Flask-SocketIO==5.0.1
 Flask-SQLAlchemy==2.4.3
-Flask-User==1.0.2.2
-Flask-WhooshAlchemy==0.56
 Flask-WTF==0.14.3
 future==0.18.2
 gunicorn==20.1.0
@@ -67,6 +62,7 @@ paramiko==2.6.0
 passlib==1.7.4
 pexpect==4.6.0
 Pillow==7.0.0
+pipenv==2020.11.15
 protobuf==3.6.1
 pycairo==1.16.2
 pycups==1.9.73
@@ -102,6 +98,8 @@ unattended-upgrades==0.1
 urllib3==1.25.8
 usb-creator==0.3.7
 vboxapi==1.0
+virtualenv==20.4.6
+virtualenv-clone==0.5.4
 wadllib==1.3.3
 Werkzeug==1.0.1
 Whoosh==2.7.4
