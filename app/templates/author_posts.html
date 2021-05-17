@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+<div>
+    <h1 class="mb-3">Posts by {{ user.username }}({{ articles.total }})</h1>
+    {% for article in articles.items %}
+    <a href="{{ url_for('user_posts',username=article.author.username) }}">
+    <img style="border-radius: 50%;width: 30px;height: 30px;" src="{{ url_for('static',filename='imgs/profile_pics/' + article.author.profile_pic )}}">
+    <span>{{ article.author.username }}</span>
+    </a>
+    <p><small class="text-danger">{{ article.category }}</small></p>
+    <h2><a href="{{ url_for('post', id = article.id) }}">{{ article.title }}</a></h2>
+    <small class="text-muted">Posted by {{ article.author.username }} on {{ article.date_posted.strftime('%Y-%m-%d') }}</small>
+    <hr>
+    {% endfor %}
+    {% for page_num in articles.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+        {% if page_num %}
+            {% if articles.page == page_num %}
+                <a class="btn btn-info mb-4" href="{{url_for('user_posts',username=user.username, page = page_num)}}">{{ page_num }}</a>
+            {% else %}
+                <a class="btn btn-outline-info mb-4" href="{{url_for('user_posts',username=user.username, page = page_num)}}">{{ page_num }}</a>
+            {% endif %}
+        {% else %}
+            ...
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

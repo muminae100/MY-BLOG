@@ -1,0 +1,15 @@
+{% extends "admin/admin.html" %}
+{% block body %}
+<h3>Site admins</h3>
+<h3>Total: {{ admins.total }}</h3>
+{% for admin in admins.items %}
+<div class="bg-light p-3 m-3">
+    <img class="rounded" src="{{ image_file }}" alt="profile_pic" width="50px" height="50px">
+    <p>Username: {{ admin.username }}</p>
+    <p>Email: {{ admin.email }}</p>
+    <a class="btn btn-primary" href="">Message admin</a>
+    <a class="btn btn-secondary" href="">Remove admin role</a>
+    <a class="btn btn-danger" href="">Delete account</a>
+</div>
+{% endfor %}
+{% endblock %}

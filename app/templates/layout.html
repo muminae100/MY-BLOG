@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Blog</title>
+    {% endif %}
+    <style>
+      .article-body{
+        width: 90%;
+        margin: 0 auto;
+        background-color: rgba(0,0,0,.1);
+        padding: 20px;
+      }
+    </style>
+</head>
+<body>
+<div>   
+        <div style="width: 100%;float: right;" class="mb-1 p-1">
+          <a class="text-dark" href="#"><i style="float:right;border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-instagram"></i></a>
+          <a class="text-dark" href="#"><i style="float:right;border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-linkedin"></i></a>
+          <a class="text-dark" href="#"><i style="float:right;border-radius: 50%;padding: 10px;background-color: #f1f1f1;"  class="fa fa-twitter"></i></a>
+          <a class="text-dark" href="#"><i style="float:right;border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-facebook"></i></a>
+        </div>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
+            <a class="navbar-brand" href="{{url_for('index')}}">
+              <h3 style="border-radius: 50%;background-color: darkblue;padding: 5px 10px;">B</h3>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" href="{{url_for('index')}}">Home</a>
+              </li>
+              {% if current_user.is_authenticated %}
+              {% if current_user.post_author == True %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('new_post')}}">New Post</a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('account')}}">Account</a>
+              </li>
+              <li class="nav-item">
+              <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+              </li>
+              {% if current_user.admin == True %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('admin')}}">Admin panel</a>
+              </li>
+              {% endif %}
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('login')}}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('register')}}">Register</a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('contact')}}">Contact us</a>
+              </li>
+                <!-- Dropdown -->
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                  Theme
+                </a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Dark</a>
+                  <a class="dropdown-item" href="#">Light</a>
+                </div>
+              </li>
+            </ul>
+            </div>
+            <div class="float-right">
+            <form class="form-inline" action="search" method="GET">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search for articles...">
+                <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
+              </form>
+            </div> 
+        </nav>
+        <br>
+    <div>
+    {% with messages = get_flashed_messages(with_categories = true) %}
+        {% if messages %}
+            {% for category,message in messages %}
+                <div class="alert alert-{{category}}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+    </div>
+    <br>
+</div>
+<div class="m-3">
+  <p class="text-dark">Follow us:</p>
+  <a href="#"><i style="color:darkblue;border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-facebook"></i></a>
+  <a class="text-info" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-twitter"></i></a>
+  <a href="#"><i style="color:blue;border-radius: 50%;padding: 10px;background-color: #f1f1f1;"  class="fa fa-linkedin"></i></a>
+  <a class="text-danger" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-instagram"></i></a>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small blue pt-4 bg-dark text-light">
+
+  <!-- Footer Links -->
+  <div class="container-fluid text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase">ABOUT US</h5>
+        <ul class="list-unstyled">
+          <li>Hitman company limited</li>
+          <li>Located along Hitman Avenue</li>
+          <li>Hitman building 3rd floor</li>
+          <li>Call: 0741674737</li>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Blog</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="{{ url_for('index') }}">Blog</a>
+          </li>
+          {% if current_user.is_authenticated %}
+          ...
+          {% else %}
+          <li>
+            <a href="{{ url_for('register') }}">Join us today for free!</a>
+          </li>
+          {% endif %}
+          <li>
+            <a href="#!">Advertise with us</a>
+          </li>
+          <li>
+            <a href="{{ url_for('contact') }}">Contact us</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Terms & Privacy</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="{{ url_for('privacy_policy') }}">Privacy policy</a>
+          </li>
+          <li>
+            <a href="{{ url_for('terms_conditions') }}">Terms and conditions</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright: Blog
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+{% extends "admin/admin.html" %}
+{% block body %}
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-top:43px;">
+
+    <!-- Header -->
+    <header class="w3-container" style="padding-top:22px">
+      <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+    </header>
+  
+    <div class="w3-row-padding w3-margin-bottom">
+      <div class="w3-quarter m-3 p-3">
+      <a href="{{ url_for('all_admins') }}">
+        <div class="w3-container w3-blue w3-padding-16">
+          <div class="w3-left"><span style="font-size: 36px;" class="material-icons">
+            admin_panel_settings
+            </span></div>
+          <div class="w3-clear"></div>
+          <h4>Site admins</h4>
+        </div>
+      </a>
+      </div>
+        <div class="w3-quarter m-3 p-3">
+          <a href="{{ url_for('all_users') }}">
+          <div class="w3-container w3-orange w3-text-white w3-padding-16">
+            <div class="w3-left"><i style="font-size: 36px;" class="fa fa-users"></i></div>
+            <div class="w3-right">
+              <h3>{{ users.total }}</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4>Users</h4>
+          </div>
+        </a>
+        </div>
+    
+        <div class="w3-quarter m-3 p-3">
+          <a href="{{ url_for('all_posts') }}">
+          <div class="w3-container bg-warning text-light w3-text-white w3-padding-16">
+            <div class="w3-left"><span style="font-size: 36px;" class="material-icons">article</span> </div>
+            <div class="w3-right">
+              <h3>{{ articles.total }}</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4>Posts</h4>
+          </div>
+        </a>
+        </div>
+     
+      
+      <div class="w3-quarter m-3 p-3">
+        <a href="{{ url_for('comments') }}">
+        <div class="w3-container w3-red w3-padding-16">
+          <div class="w3-left"><i style="font-size: 36px;"  class="fa fa-comment"></i></div>
+          <div class="w3-right">
+            <h3>{{ comments.total }}</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Comments</h4>
+        </div>
+      </a>
+      </div>
+     
+      <div class="w3-quarter m-3 p-3">
+        <a href="{{ url_for('notifications') }}">
+        <div class="w3-container bg-info text-light w3-padding-16">
+          <div class="w3-left"><i style="font-size: 36px;"  class="fa fa-bell"></i></div>
+          <div class="w3-right">
+            <h3>23</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Notifications</h4>
+        </div>
+      </a>
+      </div>
+      <div class="w3-quarter m-3 p-3">
+        <a href="{{ url_for('settings') }}">
+        <div class="w3-container w3-teal w3-padding-16">
+          <div class="w3-left"><i style="font-size: 36px;"  class="fa fa-cog"></i></div>
+          <div class="w3-clear"></div>
+          <h4>Settings</h4>
+        </div>
+      </a>
+      </div>
+     
+    </div>
+  
+    <div class="w3-panel">
+      <div class="w3-row-padding" style="margin:0 -16px">
+        <div class="w3-third">
+          <h5>Regions</h5>
+          <img src="/w3images/region.jpg" style="width:100%" alt="Google Regional Map">
+        </div>
+        <div class="w3-twothird">
+          <h5>Feeds</h5>
+          <table class="w3-table w3-striped w3-white">
+            <tr>
+              <td><i class="fa fa-user w3-text-blue w3-large"></i></td>
+              <td>New record, over 90 views.</td>
+              <td><i>10 mins</i></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-bell w3-text-red w3-large"></i></td>
+              <td>Database error.</td>
+              <td><i>15 mins</i></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-users w3-text-yellow w3-large"></i></td>
+              <td>New record, over 40 users.</td>
+              <td><i>17 mins</i></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-comment w3-text-red w3-large"></i></td>
+              <td>New comments.</td>
+              <td><i>25 mins</i></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-bookmark w3-text-blue w3-large"></i></td>
+              <td>Check transactions.</td>
+              <td><i>28 mins</i></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-laptop w3-text-red w3-large"></i></td>
+              <td>CPU overload.</td>
+              <td><i>35 mins</i></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-share-alt w3-text-green w3-large"></i></td>
+              <td>New shares.</td>
+              <td><i>39 mins</i></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="w3-container">
+      <h5><b>General Stats</b></h5>
+      <p><b>Authors</b></p>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding bg-danger" style="width:25%">25%</div>
+      </div>
+   <br>
+      <p><b>Average likes per post</b></p>
+      <span>1 like per post</span>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding bg-info" style="width:50%">50%</div>
+      </div>
+  <br>
+      <p><b>Average comments per post</b></p>
+      <span>1 comment per post</span>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding w3-teal" style="width:75%">75%</div>
+      </div>
+    </div>
+    <hr>
+  
+    <div class="w3-container mt-5">
+      <h5 style="font-weight: bold;">Authors</h5>
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <th>
+            Username
+          </th>
+          <th>
+            Number of posts
+          </th>
+        </thead>
+        {% for user in users.items %}
+        {% if user.post_author == True %}
+        <tbody>
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.posts }}</td>
+        </tr>
+      </tbody>
+      {% endif %}
+      {% endfor %}
+      </table><br>
+    </div>
+    <hr>
+  
+  </div>
+
+{% endblock body %}

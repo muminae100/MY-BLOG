@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="article-body">
+    <a href="{{ url_for('user_posts',username=article.author.username) }}">
+    <img style="border-radius: 50%;width: 30px;height: 30px;" src="{{ url_for('static',filename='imgs/profile_pics/' + article.author.profile_pic )}}">
+    <span>{{ article.author.username }}</span>
+    </a>
+    <p><small class="text-danger">Category: {{ article.category }}</small></p>
+    <h2>{{ article.title }}</h2>
+    <small class="text-muted">Posted by {{ article.author.username }} on {{ article.date_posted.strftime('%Y-%m-%d') }}</small>
+    <div>
+        {{ article.content }}
+    </div>
+    {% if article.author == current_user %}
+        <div>
+            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('updatepost',id=article.id) }}">Update</a>
+            <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#myModal">
+            Delete
+          </button>
+        
+          <!-- The Modal -->
+          <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+              
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Are you sure you want to delete this post?</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <form action="{{ url_for('deletepost', id = article.id) }}" method="POST">
+                      <input class="btn btn-danger" type="submit" value="Delete">
+                  </form>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+    <div class="mb-3 mt-3">
+      <ul style="color: red;">
+      {% for post in posts %}
+        {% if post.category == article.category and post.id != article.id %}
+        <h5 style="margin: 0;">Related articles</h5>
+        <li><a href="{{ url_for('post',id=post.id) }}">{{post.title}}</a></li>
+        {% endif %}
+      {% endfor %}
+      </ul>
+    </div>
+    <div>
+      <h5 style="color: red;">More interesting articles</h5>
+      <ul>
+      {% for post in posts %}
+      <a href="{{ url_for('post',id=post.id) }}"><li>{{post.title}}</li></a>
+      {% endfor %}
+      </ul>
+    </div>
+    <form class="mt-3" action="" method="POST">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+      <div class="form-group">
+        {{ form.comments.label(class="form-control-label text-danger") }}
+        <div class="mb-3 mt-1">
+          <span>Share</span>
+          <a class="text-dark" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-instagram"></i></a>
+          <a class="text-dark" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-linkedin"></i></a>
+          <a class="text-dark" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;"  class="fa fa-twitter"></i></a>
+          <a class="text-dark" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-facebook"></i></a>
+        </div>
+        <div>
+          <div>
+            <a href=""><span class="material-icons">
+              thumb_up
+            </span></a>
+            <a href=""><span class="material-icons">
+              thumb_down_alt
+            </span></a>
+          </div>
+          {% for comment in comments %}
+            <div>
+              <div>{{ comment.comment }}</div>
+              <div>by {{ comment.writer.username }} </div> 
+              {% if current_user.is_authenticated %}
+              {% if current_user == comment.writer %}
+            <span>
+            <a href="{{ url_for('updatecomment',commentid=comment.id,articleid=article.id) }}">Edit</a>
+            <a href="{{ url_for('deletecomment',commentid=comment.id,articleid=article.id) }}">Delete</a>
+            </span>
+            {% endif %}
+            {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        {% if current_user.is_authenticated %}
+        {% if form.comments.errors %}
+        {{ form.comments(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.comments.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+            {{ form.comments(class="form-control form-control-lg") }}
+        {% endif %}
+        </div>
+    </fieldset>
+    <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+    </div>
+    </form>
+    {% else %}
+      <p class="text-danger">You must login in order to post your comment.</p>
+    {% endif %}
+</div>
+{% endblock %}
