@@ -12,6 +12,7 @@ flask-mail = "*"
 pillow = "*"
 gunicorn = "*"
 flask-wtf = "*"
+email-validator = "*"
 
 [dev-packages]
 
