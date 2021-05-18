@@ -3,11 +3,55 @@ import secrets
 from PIL import Image
 from flask import render_template,redirect,request,url_for,flash,make_response,abort
 from app import app,db,bcrypt,mail
-from app.models import Users,Articles,Images,Comments
+from app.models import Users,Articles,Images,Comments,ContactInfo,SocialMediaAccounts
 from flask_login import login_user,current_user,logout_user,login_required
 from app.forms import (RegistrationForm,LoginForm,UpdateAccountForm,
-PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,SendNotificationsForm)
+PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,SendNotificationsForm,ContactInfoForm,
+SocialMediaAccountsForm)
 from flask_mail import Message
+
+@app.route('/contacts_info')
+@login_required
+def contact_info():
+    contacts = ContactInfo.query.all()
+    form = ContactInfoForm()
+    if form.validate_on_submit():
+        company_name = form.company.data
+        address = form.address.data
+        phone = form.phone.data
+        email = form.email.data
+        city = form.city.data
+
+        contacts = ContactInfo.query.first()
+        contacts.company_name = company_name
+        contacts.address = address
+        contacts.phone = phone
+        contacts.email = email
+        contacts.city = city
+        db.session.commit()
+
+    return render_template('admin/contacts_info.html',form=form,title='Contact information')
+
+@app.route('/social_media_accounts')
+@login_required
+def social_media_accounts():
+    accounts = SocialMediaAccounts.query.all()
+    form = SocialMediaAccountsForm()
+    if form.validate_on_submit():
+        facebook = form.facebook.data
+        instagram = form.instagram.data
+        twitter = form.twitter.data
+        youtube = form.youtube.data
+        
+
+        contacts = ContactInfo.query.first()
+        contacts.facebook = facebook
+        contacts.instagarm = instagram
+        contacts.twitter = twitter
+        contacts.youtube = youtube
+        db.session.commit()
+
+    return render_template('admin/social_media_accounts.html',form=form,title='Social media accounts')
 
 
 @app.route('/')
@@ -82,9 +126,9 @@ def account():
     image_file = url_for('static', filename = 'imgs/profile_pics/' + current_user.profile_pic)
     return render_template('account.html', title = current_user.username, profile_pic = image_file, form = form)
 
-def send_email_to_admin(user,message):
-    msg = Message(f'Email from {user.username}', 
-                   sender=user.email,
+def send_email_to_admin(email,message):
+    msg = Message(f'Email from {email}', 
+                   sender=email,
                    recipients=['smuminaetx100@gmail.com'])
     msg.body = f'''
 Hi admin!
@@ -94,13 +138,12 @@ Hi admin!
 
 
 @app.route('/contact', methods = ['GET','POST'])
-@login_required
 def contact():
     form = ContactForm()
     if form.validate_on_submit():
-        user = Users.query.filter_by(email = form.email.data).first()
+        email = form.email.data
         message = form.message.data
-        send_email_to_admin(user,message)
+        send_email_to_admin(email,message)
         flash('Your email has been sent!','info')
     return render_template('contact.html',title='Contact us', form = form)
 
@@ -270,14 +313,6 @@ def comments():
     comments = Comments.query.all()
     return render_template('admin/comments.html', comments = comments)
 
-def send_email_to_admin(user,message):
-    msg = Message('Email from a user of your blog', 
-                   sender=user.email,
-                   recipients=['smuminaetx100@gmail.com'])
-    msg.body = f'''
-{message}
-'''
-    mail.send(msg)
 
 @app.route('/delete_comment/<int:commentid>')
 @login_required
@@ -388,3 +423,4 @@ def terms_conditions():
 @app.route('/privacy_policy')
 def privacy_policy():
     return render_template('privacy_policy.html', title='Privacy policy')
+

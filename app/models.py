@@ -67,3 +67,24 @@ class Comments(db.Model):
 
     def __repr__(self):
         return f"Comment('{self.id}','{self.comment}')"
+
+class ContactInfo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company_name = db.Column(db.String(50))
+    address = db.Column(db.String(50))
+    email = db.Column(db.String(50))
+    phone_number = db.Column(db.String(50))
+    city = db.Column(db.String(50))
+    
+    def __repr__(self):
+        return f"Comment('{self.id}','{self.company_name}','{self.address}','{self.phone_number}','{self.city}')"
+
+class SocialMediaAccounts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    facebook = db.Column(db.String(50))
+    twitter = db.Column(db.String(50))
+    instagram = db.Column(db.String(50))
+    youtube = db.Column(db.String(50))
+    
+    def __repr__(self):
+        return f"Comment('{self.id}','{self.facebook}','{self.twitter}','{self.instagram}','{self.youtube}')"

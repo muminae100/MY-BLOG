@@ -96,3 +96,17 @@ class SendNotificationsForm(FlaskForm):
         user = Users.query.filter_by(email = email.data).first()
         if user is None:
             raise ValidationError('Email does not exist!')
+
+class ContactInfoForm(FlaskForm):
+    company_name = StringField('Company name')
+    address = StringField('Address')
+    phone = StringField('Phone number')
+    email = StringField('Email address', validators=[Email()])
+    city = StringField('City')
+
+class SocialMediaAccountsForm(FlaskForm):
+    facebook = StringField('Facebook accoun link')
+    instagram = StringField('Instagram account link')
+    youtube = StringField('Youtube account link')
+    twitter = StringField('Twitter account link')
+    
