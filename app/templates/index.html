@@ -52,34 +52,49 @@
     </div>
  
 <div class="mt-5">
+
   <div class="container">
     <h2>Latest posts</h2>
   </div>
-    <hr>
+  <hr>
 
   <div class="section-1 text-dark ">
-    <div class="post-container p-3">
+    <div class="p-2">
+      <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
+      <p class="text-danger">Creativity Productivity </p>
+      <h2>For a More Creative Brain Follow These 5 Steps</h2>
+    </div>
+
+    <div class="p-2">
+      <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
+      <p class="text-danger">Decision Making Focus Life Lessons </p>
+      <h2>The Ultimate Productivity Hack is Saying No</h2>
+    </div>
+
+    <div class="p-2">
+      <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
+      <p class="text-danger"> Decision Making </p>
+      <h2>How Experts Figure What to Focus On</h2>
+    </div>
+
+    <div class="p-2">
       <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
       <p class="text-danger">Category</p>
-      <h2>Post title 1</h2>
+      <h2>Post title</h2>
     </div>
-    <div class="text-dark d-flex flex-column">
-        <div class="post-container p-2">
-            <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
-            <p class="text-danger">Category</p>
-            <h2>Post title 1</h2>
-        </div>
-        <div class="post-container p-2 mt-2">
-          <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
-            <p class="text-danger">Category</p>
-            <h2>Post title 1</h2>
-        </div>
-    </div>
+
+  </div>
+  
+
+</div>
+<hr>
  <div class="container">
-  <a class="" href="#">View All Posts &gt;</a>
+  <a href="#">See more &gt;</a>
  </div>
  <hr>
-</div>
+ <div>
+   <h2>All articles</h2>
+ </div>
     {% for article in articles.items %}
     <div class="p-3">
       <a href="{{ url_for('user_posts',username=article.author.username) }}">
