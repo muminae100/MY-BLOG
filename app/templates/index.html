@@ -79,7 +79,7 @@
   <a class="" href="#">View All Posts &gt;</a>
  </div>
  <hr>
-
+</div>
     {% for article in articles.items %}
     <div class="p-3">
       <a href="{{ url_for('user_posts',username=article.author.username) }}">
@@ -103,5 +103,4 @@
             ...
         {% endif %}
     {% endfor %}
-</div>
 {% endblock %}
