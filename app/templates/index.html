@@ -1,18 +1,96 @@
 {% extends "layout.html" %}
 {% block body %}
-<div>
-    <h2>All articles</h2>
+    <div id="demo" class="carousel slide m-3" data-ride="carousel">
+      <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+      </ul>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="Los Angeles" width="100%" height="500px">
+          <div class="carousel-caption">
+            <div class="bg-dark p-2">
+              <h5>Subscribe to our weekly newsletter for free!</h5>
+              <a class="btn btn-primary btn-block" href="{{ url_for('register') }}">Subscribe for free!</a>
+            </div>
+          </div>   
+        </div>
+        <div class="carousel-item">
+          <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="Chicago" width="100%" height="500px">
+          <div class="carousel-caption">
+            <div class="bg-dark p-2">
+              <h5>Contact us</h5>
+              <a class="btn btn-primary btn-block" href="{{ url_for('contact') }}">Send us an email</a>
+              </div>
+          </div>   
+        </div>
+        <div class="carousel-item">
+          <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="New York" width="100%" height="500px">
+          <div class="carousel-caption">
+            <div class="bg-dark p-2">
+               <h5>Browse our site for news</h5>
+               <a class="btn btn-primary mt-2" href="#">Latest</a>
+               <a class="btn btn-primary mt-2" href="#">Popular</a>
+               <a class="btn btn-primary mt-2" href="#">Trending</a>
+            </div>
+          </div>   
+        </div>
+        <div class="carousel-item">
+          <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="New York" width="100%" height="500px">
+          <div class="carousel-caption">
+          <div class="bg-dark p-2">
+          <h5>Follow us on our social media accounts</h5>
+          <i class="fa fa-instagram"></i>
+          <i class="fa fa-facebook"></i>
+          <i class="fa fa-youtube"></i>
+          <i class="fa fa-twitter"></i>
+        </div>
+        </div>   
+        </div>
+      </div>
+    </div>
+ 
+<div class="mt-5">
+  <div class="container">
+    <h2>Latest posts</h2>
+  </div>
+    <hr>
+
+  <div class="section-1 text-dark ">
+    <div class="post-container p-3">
+      <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
+      <p class="text-danger">Category</p>
+      <h2>Post title 1</h2>
+    </div>
+    <div class="text-dark d-flex flex-column">
+        <div class="post-container p-2">
+            <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
+            <p class="text-danger">Category</p>
+            <h2>Post title 1</h2>
+        </div>
+        <div class="post-container p-2 mt-2">
+          <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
+            <p class="text-danger">Category</p>
+            <h2>Post title 1</h2>
+        </div>
+    </div>
+ <div class="container">
+  <a class="" href="#">View All Posts &gt;</a>
+ </div>
+ <hr>
+
     {% for article in articles.items %}
     <div class="p-3">
-    <a href="{{ url_for('user_posts',username=article.author.username) }}">
-    <img style="border-radius: 50%;width: 30px;height: 30px;" src="{{ url_for('static',filename='imgs/profile_pics/' + article.author.profile_pic )}}">
-    <span>{{ article.author.username }}</span>
-    </a>
-    <p><small class="text-danger">{{ article.category }}</small></p>
-    <h5><a href="{{ url_for('post', id = article.id) }}">{{ article.title }}</a></h5>
-    <small class="text-muted">Posted by {{ article.author.username }} on {{ article.date_posted.strftime('%Y-%m-%d') }}</small>
-    <hr>
-    </div>
+      <a href="{{ url_for('user_posts',username=article.author.username) }}">
+      <img style="border-radius: 50%;width: 30px;height: 30px;" src="{{ url_for('static',filename='imgs/profile_pics/' + article.author.profile_pic )}}">
+      <span>{{ article.author.username }}</span>
+      </a>
+      <p><small class="text-danger">{{ article.category }}</small></p>
+      <h5><a href="{{ url_for('post', id = article.id) }}">{{ article.title }}</a></h5>
+      <small class="text-muted">Posted by {{ article.author.username }} on {{ article.date_posted.strftime('%Y-%m-%d') }}</small>
+      <hr>
+      </div>
     {% endfor %}
     {% for page_num in articles.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
         {% if page_num %}
