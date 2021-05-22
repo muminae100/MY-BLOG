@@ -11,7 +11,7 @@
           <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="Los Angeles" width="100%" height="500px">
           <div class="carousel-caption">
             <div class="bg-dark p-2">
-              <h5>Subscribe to our weekly newsletter for free!</h5>
+              <h6>Subscribe to our weekly newsletter for free!</h6>
               <a class="btn btn-primary btn-block" href="{{ url_for('register') }}">Subscribe for free!</a>
             </div>
           </div>   
@@ -20,7 +20,7 @@
           <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="Chicago" width="100%" height="500px">
           <div class="carousel-caption">
             <div class="bg-dark p-2">
-              <h5>Contact us</h5>
+              <h6>Contact us</h6>
               <a class="btn btn-primary btn-block" href="{{ url_for('contact') }}">Send us an email</a>
               </div>
           </div>   
@@ -29,7 +29,7 @@
           <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="New York" width="100%" height="500px">
           <div class="carousel-caption">
             <div class="bg-dark p-2">
-               <h5>Browse our site for news</h5>
+               <h6>Browse our site for news</h6>
                <a class="btn btn-primary mt-2" href="#">Latest</a>
                <a class="btn btn-primary mt-2" href="#">Popular</a>
                <a class="btn btn-primary mt-2" href="#">Trending</a>
@@ -40,7 +40,7 @@
           <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="New York" width="100%" height="500px">
           <div class="carousel-caption">
           <div class="bg-dark p-2">
-          <h5>Follow us on our social media accounts</h5>
+          <h6>Follow us on our social media accounts</h6>
           <i class="fa fa-instagram"></i>
           <i class="fa fa-facebook"></i>
           <i class="fa fa-youtube"></i>
@@ -57,56 +57,75 @@
     <h2>Latest posts</h2>
   </div>
   <hr>
-
+ 
   <div class="section-1 text-dark ">
+    
     <div class="p-2">
       <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
       <p class="text-danger">Creativity Productivity </p>
-      <h2>For a More Creative Brain Follow These 5 Steps</h2>
+      <h6>For a More Creative Brain Follow These 5 Steps</h6>
     </div>
-
+  
     <div class="p-2">
       <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
       <p class="text-danger">Decision Making Focus Life Lessons </p>
-      <h2>The Ultimate Productivity Hack is Saying No</h2>
+      <h6>The Ultimate Productivity Hack is Saying No</h6>
     </div>
 
     <div class="p-2">
       <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
       <p class="text-danger"> Decision Making </p>
-      <h2>How Experts Figure What to Focus On</h2>
+      <h6>How Experts Figure What to Focus On</h6>
     </div>
 
     <div class="p-2">
       <img class="post-image" src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" width="100%" height="auto">
-      <p class="text-danger">Category</p>
-      <h2>Post title</h2>
+      <p class="text-danger">Healthy living</p>
+      <h6>Why is it important to visit the doctor oftenly?</h6>
     </div>
 
   </div>
-  
 
 </div>
-<hr>
- <div class="container">
-  <a href="#">See more &gt;</a>
+
+ <div class="mb-5 p-2 container">
+  <a class="float-right" href="#">See more</a>
  </div>
- <hr>
- <div>
-   <h2>All articles</h2>
- </div>
-    {% for article in articles.items %}
-    <div class="p-3">
-      <a href="{{ url_for('user_posts',username=article.author.username) }}">
-      <img style="border-radius: 50%;width: 30px;height: 30px;" src="{{ url_for('static',filename='imgs/profile_pics/' + article.author.profile_pic )}}">
-      <span>{{ article.author.username }}</span>
-      </a>
-      <p><small class="text-danger">{{ article.category }}</small></p>
-      <h5><a href="{{ url_for('post', id = article.id) }}">{{ article.title }}</a></h5>
-      <small class="text-muted">Posted by {{ article.author.username }} on {{ article.date_posted.strftime('%Y-%m-%d') }}</small>
-      <hr>
+
+<div>
+  <h2>Trending posts</h2>
+</div>
+<div class="section-2 bg-light p-3">
+  <div>
+    <hr>
+    <div class="media p-3">
+      <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" class="mr-3 mt-3" style="width:200px;">
+      <div class="media-body">
+        <p class="text-danger">Decision Making Focus Life Lessons</p>
+        <h4>The Ultimate Productivity Hack is Saying No</h4>
       </div>
-    {% endfor %}
+    </div>
+    <hr>
+    <div class="media p-3">
+      <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" class="mr-3 mt-3" style="width:200px;">
+      <div class="media-body">
+        <p class="text-danger">Decision Making Focus Life Lessons</p>
+        <h4>The Ultimate Productivity Hack is Saying No</h4>
+      </div>
+    </div>
+    <hr>
+    <div class="media p-3">
+      <img src="{{ url_for('static',filename='imgs/post_imgs/newsletter.jpg') }}" alt="" class="mr-3 mt-3" style="width:200px;">
+      <div class="media-body">
+        <p class="text-danger">Decision Making Focus Life Lessons</p>
+        <h4>The Ultimate Productivity Hack is Saying No</h4>
+      </div>
+    </div>
+    <hr>
+  </div>
+</div>
+
+  
     {% for page_num in articles.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
         {% if page_num %}
             {% if articles.page == page_num %}

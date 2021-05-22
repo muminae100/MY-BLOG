@@ -63,21 +63,22 @@
       .post-image:hover{
         opacity: .8;
       }
-      @media screen and (max-width:800px) {
-        .section-1 > div{
-          width: 100%;
-          height: auto;
-        }
+      .section-2{
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+      .section-2 > div{
+        width: 50%;
+        height: auto;
+        margin: 2.5%;
       }
       </style>
 </head>
 <body>
 <div>   
-        <div style="width: 100%;float: right;" class="mb-1 p-2">
-          <a class="text-dark" href="#"><i style="float:right;border-radius: 50%;" class="fa fa-instagram"></i></a>
-          <a class="text-dark" href="#"><i style="float:right;border-radius: 50%;" class="fa fa-linkedin"></i></a>
-          <a class="text-dark" href="#"><i style="float:right;border-radius: 50%;"  class="fa fa-twitter"></i></a>
-          <a class="text-dark" href="#"><i style="float:right;border-radius: 50%;" class="fa fa-facebook"></i></a>
+        <div style="width: 100%;float: right;" class="p-2">
+          <p>Welcome to my blog</p>
         </div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
           {% if current_user.is_authenticated %}
@@ -149,9 +150,9 @@
     <br>
 <div class="m-3">
   <p class="text-dark">Follow us:</p>
-  <a href="#"><i style="color:darkblue;border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-facebook"></i></a>
+  <a href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-facebook"></i></a>
   <a class="text-info" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-twitter"></i></a>
-  <a href="#"><i style="color:blue;border-radius: 50%;padding: 10px;background-color: #f1f1f1;"  class="fa fa-linkedin"></i></a>
+  <a href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;"  class="fa fa-linkedin"></i></a>
   <a class="text-danger" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-instagram"></i></a>
 </div>
 
@@ -170,7 +171,9 @@
         <!-- Content -->
         <h5 class="text-uppercase">ABOUT US</h5>
         <ul class="list-unstyled">
-          <li>Company name</li>
+          <li>Blog</li>
+          <li>Email:smuminaetx100@gmail.com</li>
+          <li>Whatsapp: 0741764737</li>
         </ul>
       </div>
       <!-- Grid column -->
