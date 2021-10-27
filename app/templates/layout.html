@@ -94,10 +94,10 @@
                           </button>
                         </li>
                         <li class="nav-item active">
-                          <a class="nav-link" href="index-2.html">Home</a>
+                          <a class="nav-link" href="{{ url_for('index') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="pages/magazine.html">MAGAZINE</a>
+                          <a class="nav-link" href="{{ url_for('magazine') }}">MAGAZINE</a>
                         </li>
                         <li class="nav-item">
                           <a class="nav-link" href="pages/business.html">Business</a>
@@ -172,7 +172,8 @@
           {% endif %}
           {% endwith %}
         </div>
-        {% block body %}{% endblock %}
+        {% block body %}{% endblock body %}
+        {% block magazine %}{% endblock magazine %}
       </div>
     </div>
 

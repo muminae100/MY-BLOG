@@ -424,3 +424,7 @@ def terms_conditions():
 def privacy_policy():
     return render_template('privacy_policy.html', title='Privacy policy')
 
+
+@app.route('/magazine')
+def magazine():
+    return render_template('pages/magazine.html')
