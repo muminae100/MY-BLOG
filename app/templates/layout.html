@@ -1,255 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
-    {% if title %}
-    <title>{{ title }}</title>
-    {% else %}
-    <title>Blog</title>
-    {% endif %}
-    <style>
-      .carousel-inner img {
-        width: 100%;
-        height: 100%;
-      }
-      .loader{
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0, 0, .5);
-        position: fixed;
-        z-index: 99;
-        top: 0;
-        left: 0;
-      }
-      .spinner-grow{
-        position: fixed;
-        z-index: 99;
-        top: 50%;
-        left: 50%;
-      }
-      .loader-hidden{
-        animation: fadeOut 1s;
-        animation-fill-mode: forwards;
-      }
-      @keyframes fadeOut{
-        100%{
-          opacity: 0;
-          visibility: hidden;
-        }
-      }
-      .section-1{
-        display: flex;
-        width: 100%;
-        flex-wrap: wrap;
-      }
-      .section-1 > div{
-        width: 45%;
-        height: auto;
-        margin: 2.5%;
-      }
-      .post-image{
-        opacity: 1;
-      }
-      .post-image:hover{
-        opacity: .8;
-      }
-      .section-2{
-        display: flex;
-        width: 100%;
-        flex-wrap: wrap;
-      }
-      .section-2 > div{
-        width: 50%;
-        height: auto;
-        margin: 2.5%;
-      }
-      </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- plugin css for this page -->
+  <link rel="stylesheet"
+    href="{{ url_for('static', filename = 'assets/vendors/mdi/css/materialdesignicons.min.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'assets/vendors/aos/dist/aos.css/aos.css') }}" />
+
+  <!-- End plugin css for this page -->
+  <link rel="shortcut icon" href="{{ url_for('static', filename = 'assets/images/favicon.png') }}" />
+
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'assets/css/style.css') }}">
+  <!-- endinject -->
+  {% if title %}
+  <title>{{ title }}</title>
+  {% else %}
+  <title>Blog</title>
+  {% endif %}
+
 </head>
+
 <body>
-<div>   
-        <div style="width: 100%;float: right;" class="p-2">
-          <p>Welcome to my blog</p>
-        </div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-          {% if current_user.is_authenticated %}
-          <a class="navbar-brand" href="{{url_for('account')}}">
-              <img style="width:40px;border-radius: 50%;" src="{{ url_for('static',filename='imgs/profile_pics/' + current_user.profile_pic )}}" alt="Account">
-          </a>
-          {% endif %}
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
-              </li>
-              {% if current_user.is_authenticated %}
-              {% if current_user.admin == True %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('admin')}}">Admin panel</a>
-              </li>
-              {% endif %}
-              {% if current_user.post_author == True %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('new_post')}}">New Post</a>
-              </li>
-              {% endif %}
-              <li class="nav-item">
-              <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
-              </li>
-             
-              {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('login')}}">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('register')}}">Register</a>
-              </li>
-              {% endif %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{url_for('contact')}}">Contact us</a>
-              </li>
-              
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search for articles..." aria-label="Search">
-              <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
-            </form>
-          </div>
-        </nav>
-    <div>
-    {% with messages = get_flashed_messages(with_categories = true) %}
-        {% if messages %}
-            {% for category,message in messages %}
-                <div class="alert alert-{{category}}">
-                    {{message}}
+  <div>
+    <div class="container-scroller">
+      <div class="main-panel">
+        <!-- partial:partials/_navbar.html -->
+        <header id="header">
+          <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <div class="navbar-top">
+                <div class="d-flex justify-content-between align-items-center">
+                  <ul class="navbar-top-left-menu">
+                    <li class="nav-item">
+                      <a href="pages/index-inner.html" class="nav-link">Advertise</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="pages/aboutus.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">Events</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">Write for Us</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">In the Press</a>
+                    </li>
+                  </ul>
+                  <ul class="navbar-top-right-menu">
+                    <li class="nav-item">
+                      <a href="#" class="nav-link"><i class="mdi mdi-magnify"></i></a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">Sign in</a>
+                    </li>
+                  </ul>
                 </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    </div>
-    <div class="container-fluid">
-      <div class="loader">
-        <div class="spinner-grow text-dark"></div>
-      </div>
-      <br>
-        {% block body %}{% endblock %}
-    </div>
-    <br>
-<div class="m-3">
-  <p class="text-dark">Follow us:</p>
-  <a href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-facebook"></i></a>
-  <a class="text-info" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-twitter"></i></a>
-  <a href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;"  class="fa fa-linkedin"></i></a>
-  <a class="text-danger" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-instagram"></i></a>
-</div>
+              </div>
+              <div class="navbar-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <a class="navbar-brand" href="#">
+                      <span style="color: #e04a41;font-weight: 400;font-size: 25px;">TheKenyanReporter</span>
+                      <!-- <img src="{{ url_for('static', filename = 'assets/images/TheKenyanReporter.png') }}" alt="Kenya Today" /> -->
+                    </a>
+                  </div>
+                  <div>
+                    <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent"
+                      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse justify-content-center collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav d-lg-flex justify-content-between align-items-center">
+                        <li>
+                          <button class="navbar-close">
+                            <i class="mdi mdi-close"></i>
+                          </button>
+                        </li>
+                        <li class="nav-item active">
+                          <a class="nav-link" href="index-2.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="pages/magazine.html">MAGAZINE</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="pages/business.html">Business</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="pages/sports.html">Sports</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="pages/art.html">Art</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="pages/politics.html">POLITICS</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="pages/travel.html">Travel</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="pages/contactus.html">Contact</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <ul class="social-media">
+                    <li>
+                      <a href="#">
+                        <i class="mdi mdi-facebook"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="mdi mdi-youtube"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="mdi mdi-twitter"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </header>
 
-<!-- Footer -->
-<footer class="page-footer font-small blue pt-4 bg-dark text-light">
-
-  <!-- Footer Links -->
-  <div class="container-fluid text-center text-md-left">
-
-    <!-- Grid row -->
-    <div class="row">
-
-      <!-- Grid column -->
-      <div class="col-md-6 mt-md-0 mt-3">
-
-        <!-- Content -->
-        <h5 class="text-uppercase">ABOUT US</h5>
-        <ul class="list-unstyled">
-          <li>Blog</li>
-          <li>Email:smuminaetx100@gmail.com</li>
-          <li>Whatsapp: 0741764737</li>
-        </ul>
-      </div>
-      <!-- Grid column -->
-
-      <hr class="clearfix w-100 d-md-none pb-3">
-
-      <!-- Grid column -->
-      <div class="col-md-3 mb-md-0 mb-3">
-
-        <!-- Links -->
-        <h5 class="text-uppercase">Blog</h5>
-
-        <ul class="list-unstyled">
-          <li>
-            <a href="{{ url_for('index') }}">Blog</a>
-          </li>
-          {% if current_user.is_authenticated %}
-          {% else %}
-          <li>
-            <a href="{{ url_for('register') }}">Join us today for free!</a>
-          </li>
+        <!-- partial -->
+        <div class="flash-news-banner">
+          <div class="container">
+            <div class="d-lg-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center">
+                <span class="badge badge-dark mr-3">Flash news</span>
+                <p class="mb-0">
+                  Lorem Ipsum has been the industry's standard dummy text ever
+                  since the 1500s.
+                </p>
+              </div>
+              <div class="d-flex">
+                <span class="mr-3 text-danger">Wed, October 27, 2021</span>
+                <span class="text-danger">30°C Nairobi, Kenya</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          {% with messages = get_flashed_messages(with_categories = true) %}
+          {% if messages %}
+          {% for category,message in messages %}
+          <div class="alert alert-{{category}}">
+            {{message}}
+          </div>
+          {% endfor %}
           {% endif %}
-          <li>
-            <a href="#!">Advertise with us</a>
-          </li>
-          <li>
-            <a href="{{ url_for('contact') }}">Contact us</a>
-          </li>
-        </ul>
-
+          {% endwith %}
+        </div>
+        {% block body %}{% endblock %}
       </div>
-      <!-- Grid column -->
-
-      <!-- Grid column -->
-      <div class="col-md-3 mb-md-0 mb-3">
-
-        <!-- Links -->
-        <h5 class="text-uppercase">Terms & Privacy</h5>
-
-        <ul class="list-unstyled">
-          <li>
-            <a href="{{ url_for('privacy_policy') }}">Privacy policy</a>
-          </li>
-          <li>
-            <a href="{{ url_for('terms_conditions') }}">Terms and conditions</a>
-          </li>
-        </ul>
-
-      </div>
-      <!-- Grid column -->
-
     </div>
-    <!-- Grid row -->
 
+
+    <!-- partial:partials/_footer.html -->
+    <footer>
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-5">
+              <img src="{{ url_for('static', filename = 'assets/images/logo.svg') }}" class="footer-logo" alt="" />
+              <h5 class="font-weight-normal mt-4 mb-5">
+                Newspaper is your news, entertainment, music fashion website. We
+                provide you with the latest breaking news and videos straight from
+                the entertainment industry.
+              </h5>
+              <ul class="social-media mb-3">
+                <li>
+                  <a href="#">
+                    <i class="mdi mdi-facebook"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="mdi mdi-youtube"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="mdi mdi-twitter"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h3 class="font-weight-bold mb-3">RECENT POSTS</h3>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="footer-border-bottom pb-2">
+                    <div class="row">
+                      <div class="col-3">
+                        <img src="{{ url_for('static', filename = '') }}assets/images/dashboard/home_1.jpg" alt="thumb"
+                          class="img-fluid" />
+                      </div>
+                      <div class="col-9">
+                        <h5 class="font-weight-600">
+                          Cotton import from USA to soar was American traders
+                          predict
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="footer-border-bottom pb-2 pt-2">
+                    <div class="row">
+                      <div class="col-3">
+                        <img src="{{ url_for('static', filename = 'assets/images/dashboard/home_2.jpg') }}" alt="thumb"
+                          class="img-fluid" />
+                      </div>
+                      <div class="col-9">
+                        <h5 class="font-weight-600">
+                          Cotton import from USA to soar was American traders
+                          predict
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div>
+                    <div class="row">
+                      <div class="col-3">
+                        <img src="{{ url_for('static', filename = 'assets/images/dashboard/home_3.jpg') }}" alt="thumb"
+                          class="img-fluid" />
+                      </div>
+                      <div class="col-9">
+                        <h5 class="font-weight-600 mb-3">
+                          Cotton import from USA to soar was American traders
+                          predict
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <h3 class="font-weight-bold mb-3">CATEGORIES</h3>
+              <div class="footer-border-bottom pb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0 font-weight-600">Magazine</h5>
+                  <div class="count">1</div>
+                </div>
+              </div>
+              <div class="footer-border-bottom pb-2 pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0 font-weight-600">Business</h5>
+                  <div class="count">1</div>
+                </div>
+              </div>
+              <div class="footer-border-bottom pb-2 pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0 font-weight-600">Sports</h5>
+                  <div class="count">1</div>
+                </div>
+              </div>
+              <div class="footer-border-bottom pb-2 pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0 font-weight-600">Arts</h5>
+                  <div class="count">1</div>
+                </div>
+              </div>
+              <div class="pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0 font-weight-600">Politics</h5>
+                  <div class="count">1</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="d-sm-flex justify-content-between align-items-center">
+                <div class="fs-14 font-weight-600">
+                  <ul class="list-unstyled">
+                    <li>
+                      <a href="{{ url_for('index') }}">Kenya today</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    {% else %}
+                    <li>
+                      <a href="{{ url_for('register') }}">Join us today for free!</a>
+                    </li>
+                    {% endif %}
+                    <li>
+                      <a href="#!">Advertise with us</a>
+                    </li>
+                    <li>
+                      <a href="{{ url_for('contact') }}">Contact us</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="fs-14 font-weight-600">
+                  © 2020 Kenya Today. All rights reserved.
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- partial -->
   </div>
-  <!-- Footer Links -->
-
-  <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">© 2020 Copyright: Blog
-  </div>
-  <!-- Copyright -->
-
-</footer>
-<!-- Footer -->
-</div>
-<script>
-  $(document).ready(function(){
-    $('.toast').toast('show');
-  });
-
-  window.addEventListener('load', function(){
-    const loader = document.querySelector(".loader");
-    loader.className += " loader-hidden";
-  })
-</script>
-  
+  <!-- inject:js -->
+  <script src="{{ url_for('static', filename = 'assets/vendors/js/vendor.bundle.base.js') }}"></script>
+  <!-- endinject -->
+  <!-- plugin js for this page -->
+  <script src="{{ url_for('static', filename = 'assets/vendors/aos/dist/aos.js/aos.js') }}"></script>
+  <!-- End plugin js for this page -->
+  <!-- Custom js for this page-->
+  <script src="{{ url_for('static', filename = 'assets/js/demo.js') }}"></script>
+  <script src="{{ url_for('static', filename = 'assets/js/jquery.easeScroll.js') }}"></script>
+  <!-- End custom js for this page-->
 
 </body>
+
 </html>

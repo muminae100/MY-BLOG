@@ -13,6 +13,7 @@ pillow = "*"
 gunicorn = "*"
 flask-wtf = "*"
 email-validator = "*"
+colorama = "*"
 
 [dev-packages]
 
