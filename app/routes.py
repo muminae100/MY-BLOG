@@ -427,4 +427,29 @@ def privacy_policy():
 
 @app.route('/magazine')
 def magazine():
-    return render_template('pages/magazine.html')
+    return render_template('pages/categories.html', heading='Magazine')
+
+@app.route('/business')
+def business():
+    return render_template('pages/categories.html', heading='Business')
+
+@app.route('/sports')
+def sports():
+    return render_template('pages/categories.html', heading='Sports')
+
+@app.route('/art')
+def art():
+    return render_template('pages/categories.html', heading='Art')
+
+@app.route('/politics')
+def politics():
+    return render_template('pages/categories.html', heading='Politics')
+
+@app.route('/travel')
+def travel():
+    return render_template('pages/categories.html', heading='Travel')
+
+@app.route('/about')
+def about():
+    return render_template('pages/aboutus.html')
+
