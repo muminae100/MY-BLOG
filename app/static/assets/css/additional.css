@@ -2,6 +2,7 @@
 .icon-bar {
     position: fixed;
     top: 50%;
+    z-index: 999;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
@@ -45,4 +46,52 @@
   .youtube {
     background: #bb0000;
     color: white;
+  }
+
+  /* newsletter */
+  /* Style the form element with a border around it */
+.nl-ad{
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  justify-content: space-between;
+  width: 78%;
+  margin: auto;
+  border-radius: 5px;
+}
+
+.newsletter{
+  width: 350px;
+}
+  
+  /* Add some padding and a grey background color to containers */
+  .nl-container {
+    padding: 20px;
+    background-color: white;
+  }
+  
+  /* Style the input elements and the submit button */
+  input[type=text], input[type=submit] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  /* Add margins to the checkbox */
+  input[type=checkbox] {
+    margin-top: 16px;
+  }
+  
+  /* Style the submit button */
+  input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    border: none;
+  }
+  
+  input[type=submit]:hover {
+    opacity: 0.8;
   }
