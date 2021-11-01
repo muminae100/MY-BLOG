@@ -63,7 +63,28 @@
                   </ul>
                   <ul class="navbar-top-right-menu">
                     <li class="nav-item">
-                      <a href="#" class="nav-link"><i class="mdi mdi-magnify"></i></a>
+                      <div class="nav-link">
+                      <!-- The overlay -->
+                      <div id="search-container" class="overlay">
+
+                        <!-- Button to close the overlay navigation -->
+                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+                        <!-- Overlay content -->
+                        <div class="overlay-content">
+                          <div class="search">
+                            <input type="search" class="search-box" />
+                            <span class="search-button">
+                              <span class="search-icon"></span>
+                            </span>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <!-- Use any element to open/show the overlay navigation menu -->
+                      <span onclick="openNav()"><i class="mdi mdi-magnify"></i></span>
+                    </div>
                     </li>
                     <li class="nav-item">
                       <a href="{{ url_for('login') }}" class="nav-link">Login</a>
@@ -78,7 +99,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <a class="navbar-brand" href="#">
-                      <img src="{{ url_for('static', filename = 'assets/images/logo.svg') }}" alt="" />
+                      <img src="{{ url_for('static', filename = 'assets/images/logo.svg') }}"/>
                     </a>
                   </div>
                   <div>
@@ -181,7 +202,6 @@
           <a href="#" class="youtube"><i class="fa fa-youtube"></i></a>
         </div>
         {% block body %}{% endblock body %}
-        {% block magazine %}{% endblock magazine %}
       </div>
     </div>
     <div style="width: 100%;background-color: #e6e7e8;">
@@ -384,6 +404,7 @@
   const d = new Date();
   document.getElementById("date").innerHTML = d;
   </script>
+  <script src="{{ url_for('static', filename='assets/js/scripts.js') }}"></script>
   <!-- End custom js for this page-->
 
 </body>

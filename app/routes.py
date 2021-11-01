@@ -347,7 +347,7 @@ def updatecomment(commentid,articleid):
 @app.route('/post/<int:articleid>/comment/<int:commentid>/delete')
 @login_required
 def deletecomment(articleid,commentid):
-    article = Articles.query.get_or_404(str(articleid))
+    articleid = Articles.query.get_or_404(str(articleid))
     comment = Comments.query.get_or_404(str(commentid))
     if comment.writer != current_user:
         abort(403)
