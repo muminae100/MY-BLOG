@@ -154,6 +154,12 @@ def logout():
     return redirect(url_for('index'))
 
 
+
+
+
+
+
+
 # posts
 @app.route('/newpost', methods = ['GET', 'POST'])
 @login_required
@@ -242,10 +248,14 @@ If you did not make this request simply ignore this email and no changes will be
 '''
     mail.send(msg)
 
+
+
+
+
 @app.route('/reset_password', methods = ['GET','POST'])
 def reset_request():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('index'))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = Users.query.filter_by(email = form.email.data).first()
@@ -256,8 +266,8 @@ def reset_request():
 
 @app.route('/reset_password/<token>', methods = ['GET','POST'])
 def reset_token(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('index'))
     user = Users.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token!', 'warning')

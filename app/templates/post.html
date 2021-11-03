@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="bg-light p-3">
+<div style="background-color: white;" class="container mb-5 mt-5 p-5">
     <a href="{{ url_for('user_posts',username=article.author.username) }}">
     <img style="border-radius: 50%;width: 30px;height: 30px;" src="{{ url_for('static',filename='imgs/profile_pics/' + article.author.profile_pic )}}">
     <span>{{ article.author.username }}</span>

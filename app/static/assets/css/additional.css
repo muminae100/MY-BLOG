@@ -255,4 +255,22 @@
   height: 18px;
 }
 
+/* profile card */
+.profile-card {
+  transition: 0.3s;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+.profile-card > div{
+  margin: 20px;
+}
+.profile-img{
+  border-radius: 50%;
+}
+
+.profile-container {
+  padding: 2px 16px;
+}
  

@@ -86,12 +86,21 @@
                       <span onclick="openNav()"><i class="mdi mdi-magnify"></i></span>
                     </div>
                     </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                      <a href="{{ url_for('account') }}" class="nav-link">
+                        <img style="width:30px;height:30px;border-radius: 50%;" 
+                        src="{{ url_for('static',filename='imgs/profile_pics/' + current_user.profile_pic )}}" alt="Account">
+                      </a>
+                    </li>
+                    {% else %}
                     <li class="nav-item">
                       <a href="{{ url_for('login') }}" class="nav-link">Login</a>
                     </li>
                     <li class="nav-item">
                       <a href="{{ url_for('register') }}" class="nav-link">Sign up</a>
                     </li>
+                    {% endif %}
                   </ul>
                 </div>
               </div>
@@ -358,25 +367,6 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="d-sm-flex justify-content-between align-items-center">
-                <div class="fs-14 font-weight-600">
-                  <ul class="list-unstyled">
-                    <li>
-                      <a href="{{ url_for('index') }}">Kenya today</a>
-                    </li>
-                    {% if current_user.is_authenticated %}
-                    {% else %}
-                    <li>
-                      <a href="{{ url_for('register') }}">Join us today for free!</a>
-                    </li>
-                    {% endif %}
-                    <li>
-                      <a href="#!">Advertise with us</a>
-                    </li>
-                    <li>
-                      <a href="{{ url_for('contact') }}">Contact us</a>
-                    </li>
-                  </ul>
-                </div>
                 <div class="fs-14 font-weight-600">
                   © 2020 Kenya Today. All rights reserved.
                 </div>
