@@ -6,6 +6,25 @@
         <div style="background-image: url('../static/imgs/profile_pics/{{ user.profile_pic }}');" class="chip-img"></div>
         {{ user.username }}
       </div>
+      <div class="p-1 mt-3">
+      <ul class="social-media mb-3 p-3">
+        <li>
+          <a href="#">
+            <i class="mdi mdi-facebook"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="mdi mdi-youtube"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="mdi mdi-twitter"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
       <h1 class="mb-3">Posts by {{ user.username }}({{ articles.total }})</h1>
     </div>
 
