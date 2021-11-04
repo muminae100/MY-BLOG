@@ -131,7 +131,7 @@ def send_email_to_admin(email,message):
                    sender=email,
                    recipients=['smuminaetx100@gmail.com'])
     msg.body = f'''
-Hi admin!
+Hi admin WORLDNEWS!
 {message}
 '''
     mail.send(msg)
@@ -227,7 +227,7 @@ def deletepost(id):
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('index'))
 
-@app.route('/user/<string:username>')
+@app.route('/author/<string:username>')
 def user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = Users.query.filter_by(username=username).first_or_404()
@@ -254,8 +254,6 @@ If you did not make this request simply ignore this email and no changes will be
 
 @app.route('/reset_password', methods = ['GET','POST'])
 def reset_request():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('index'))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = Users.query.filter_by(email = form.email.data).first()
@@ -266,8 +264,6 @@ def reset_request():
 
 @app.route('/reset_password/<token>', methods = ['GET','POST'])
 def reset_token(token):
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('index'))
     user = Users.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token!', 'warning')
@@ -280,6 +276,11 @@ def reset_token(token):
         flash(f'Your password has been updated! You are now able to login and access your account', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title = 'Reset Password', form = form)
+
+
+
+
+
 
 @app.route('/search')
 def search():

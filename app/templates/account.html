@@ -3,15 +3,23 @@
 <div style="background-color: white;" class="container mb-5 mt-5 p-5">
     <br>  
     <div class="profile-card">
-        <div>
-        <img class="profile-img" src="{{ profile_pic }}" alt="Account" style="width:200px;height: 200px;">
+        <div
+        style="
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-image: url('{{ profile_pic }}');
+        background-repeat: no-repeat;
+        background-size: cover;">
         </div>
         <div class="profile-container">
         <h4 class="p-1 m-1"><b>Username:</b> {{ current_user.username }}</h4> 
         <p class="p-1 m-1"><b>Email:</b> {{ current_user.email }}</p> 
-        <p class="p-1 m-1"><b>Password:</b> {{ current_user.password }}</p> 
         <div class="p-1 m-1">
             <a href="{{ url_for('reset_request') }}">Change password</a>
+        </div>
+        <div class="p-1 m-1">
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
         </div>
     </div>

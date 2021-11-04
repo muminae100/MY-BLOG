@@ -89,8 +89,15 @@
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
                       <a href="{{ url_for('account') }}" class="nav-link">
-                        <img style="width:30px;height:30px;border-radius: 50%;" 
-                        src="{{ url_for('static',filename='imgs/profile_pics/' + current_user.profile_pic )}}" alt="Account">
+                        <div 
+                        style="
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        background-image: url('../static/imgs/profile_pics/{{ current_user.profile_pic }}');
+                        background-repeat: no-repeat;
+                        background-size: cover;">
+                        </div>  
                       </a>
                     </li>
                     {% else %}
@@ -219,7 +226,7 @@
       <form action="action_page.php">
         <div class="nl-container">
           <h2>Subscribe to our Newsletter</h2>
-          <p>Subscribe toour daily newsletter to get news in your email</p>
+          <p>Subscribe to our daily newsletter to get news in your email</p>
         </div>
       
         <div class="nl-container" style="background-color:white">
