@@ -3,10 +3,9 @@
 <div style="background-color: white;" class="container mb-5 mt-5 p-5">
     <div>
       <div class="chip">
-        <img src="{{ url_for('static', filename = 'imgs/profile_pics/' + user.profile_pic) }}" max-width="96" max-height="96">
+        <div style="background-image: url('../static/imgs/profile_pics/{{ user.profile_pic }}');" class="chip-img"></div>
         {{ user.username }}
       </div>
-      <!-- <img src="{{ url_for('static', filename = 'imgs/profile_pics/' + user.profile_pic) }}">  -->
       <h1 class="mb-3">Posts by {{ user.username }}({{ articles.total }})</h1>
     </div>
 

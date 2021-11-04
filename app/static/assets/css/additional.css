@@ -114,8 +114,7 @@
 /* Position the content inside the overlay */
 .overlay-content {
   position: relative;
-  top: 25%; /* 25% from the top */
-  width: 100%; /* 100% width */
+  top: 40%; /* 25% from the top */
   text-align: center; /* Centered text/links */
   margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
 }
@@ -129,7 +128,6 @@
   display: block; /* Display block instead of inline */
   transition: 0.3s; /* Transition effects on hover (color) */
 }
-
 /* When you mouse over the navigation links, change their color */
 .overlay a:hover, .overlay a:focus {
   color: #f1f1f1;
@@ -145,6 +143,7 @@
 
 /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
 @media screen and (max-height: 450px) {
+  .overlay-content input, .overlay-content button {padding: 10px;}
   .overlay a {font-size: 20px}
   .overlay .closebtn {
     font-size: 40px;
@@ -152,107 +151,21 @@
     right: 35px;
   }
 }
-
-.search {
-  width: 100px;
-  height: 100px;
-  margin: 40px auto 0;
-  background-color: #242628;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.5s ease;
-}
-.search:before {
-  content: '';
-  display: block;
-  width: 3px;
-  height: 100%;
-  position: relative;
-  background-color: #00fede;
-  transition: all 0.5s ease;
-}
-.search.open {
-  width: 420px;
-}
-.search.open:before {
-  height: 60px;
-  margin: 20px 0 20px 30px;
-  position: absolute;
-}
-.search-box {
-  width: 100%;
-  height: 100%;
-  box-shadow: none;
-  border: none;
-  background: transparent;
-  color: #fff;
-  padding: 20px 100px 20px 45px;
-  font-size: 40px;
-}
-.search-box:focus {
+.overlay-content input{
+  width: 50%;
+  background-color: rgba(0,0,0, 0.5);
+  color: white;
   outline: none;
+  border: none;
+  margin: none;
+  padding: 16px;
 }
-.search-button {
-  width: 100px;
-  height: 100px;
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 20px;
-  cursor: pointer;
-}
-.search-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-  border: 3px solid #00fede;
-  display: block;
-  position: relative;
-  margin-left: 5px;
-  transition: all 0.5s ease;
-}
-.search-icon:before {
-  content: '';
-  width: 3px;
-  height: 15px;
-  position: absolute;
-  right: -2px;
-  top: 30px;
-  display: block;
-  background-color: #00fede;
-  transform: rotate(-45deg);
-  transition: all 0.5s ease;
-}
-.search-icon:after {
-  content: '';
-  width: 3px;
-  height: 15px;
-  position: absolute;
-  right: -12px;
-  top: 40px;
-  display: block;
-  background-color: #00fede;
-  transform: rotate(-45deg);
-  transition: all 0.5s ease;
-}
-.open .search-icon {
+.overlay-content button{
+  padding: 18px;
   margin: 0;
-  width: 60px;
-  height: 60px;
-  border-radius: 60px;
-}
-.open .search-icon:before {
-  transform: rotate(52deg);
-  right: 22px;
-  top: 23px;
-  height: 18px;
-}
-.open .search-icon:after {
-  transform: rotate(-230deg);
-  right: 22px;
-  top: 13px;
-  height: 18px;
+  border: none;
+  background-color: rgba(0,0,0, 0.5);
+  display: inline;
 }
 
 /* profile card */
@@ -285,10 +198,12 @@
   background-color: #f1f1f1;
 }
 
-.chip img {
+.chip-img {
   float: left;
   margin: 0 10px 0 -25px;
   height: 50px;
   width: 50px;
   border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover; 
 }
