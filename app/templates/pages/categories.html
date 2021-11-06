@@ -9,6 +9,11 @@
                     <div class="col-sm-12">
                       <h1 class="font-weight-600 mb-4">
                         {{ heading }}
+                        {% if articles.total == 0 %}
+                        <p>No articles under this category</p>
+                        {% else %}
+                        {{ articles.total }}
+                        {% endif %}
                       </h1>
                     </div>
                   </div>

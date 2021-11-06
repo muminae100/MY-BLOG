@@ -55,7 +55,7 @@ class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     category = StringField('Category', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
-    cover_picture = FileField('Cover picture', validators=[FileAllowed(['jpg','png','jpeg'])])
+    cover_picture = FileField('Cover picture', validators=[DataRequired(),FileAllowed(['jpg','png','jpeg'])])
     submit = SubmitField('Post')
 
 class RequestResetForm(FlaskForm):

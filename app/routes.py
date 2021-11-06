@@ -236,6 +236,15 @@ def user_posts(username):
         .paginate(per_page=20, page=page)
     return render_template('author_posts.html',articles = articles, user=user)
 
+
+@app.route('/category/<string:category>')
+def categories(category):
+    page = request.args.get('page', 1, type=int)
+    articles = Articles.query.filter_by(category=category)\
+        .order_by(Articles.date_posted.desc())\
+        .paginate(per_page=20, page=page)
+    return render_template('pages/categories.html',articles = articles,heading=category)
+
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request', 
