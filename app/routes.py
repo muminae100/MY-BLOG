@@ -1,7 +1,8 @@
+import timeago,datetime
 import os
 import secrets
 from PIL import Image
-from flask import render_template,redirect,request,url_for,flash,make_response,abort
+from flask import render_template,redirect,request,url_for,flash,abort
 from app import app,db,bcrypt,mail
 from app.models import Users,Articles,Images,Comments,ContactInfo,SocialMediaAccounts
 from flask_login import login_user,current_user,logout_user,login_required
@@ -183,6 +184,8 @@ def post(id):
     article = Articles.query.get_or_404(id)
     posts = Articles.query.order_by(Articles.date_posted.desc()).all()
     comments = article.userscomments
+    now = datetime.datetime.now() 
+    time_posted = timeago.format(article.date_posted, now)
     form = CommentsForm()
     if form.validate_on_submit():
         comment = Comments(comment=form.comments.data,user_id=current_user.id,article_id=article.id)
@@ -190,7 +193,8 @@ def post(id):
         db.session.commit()
         flash('Your have successfully added your comment!', 'success')
         return redirect(url_for('post',id = id))
-    return render_template('post.html', title=article.title, article = article,form=form,posts=posts,comments=comments)
+    return render_template('post.html', title=article.title, article = article,
+    form=form,posts=posts,comments=comments,time_posted=time_posted)
 
 @app.route('/post/<int:id>/update', methods = ['GET', 'POST'])
 @login_required

@@ -14,6 +14,8 @@ gunicorn = "*"
 flask-wtf = "*"
 email-validator = "*"
 colorama = "*"
+babel = "*"
+timeago = "*"
 
 [dev-packages]
 
