@@ -107,6 +107,22 @@ def save_picture(form_picture):
     i.save(picture_path)
     return picture_fn
 
+@app.route('/img_upload', methods=['POST'])
+@login_required
+def img_uploader():
+    img = request.files.get('file')
+    random_hex = secrets.token_hex(8)
+    _,f_ext = os.path.splitext(img.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/imgs/post_imgs', picture_fn)
+
+    output_size = (250, 250)
+    i = Image.open(img)
+    i.thumbnail(output_size)
+
+    i.save(picture_path)
+    pic_location = url_for('static', filename = 'imgs/post_imgs/' + picture_fn)
+    return jsonify({'location': pic_location})
 
 @app.route('/account', methods = ['GET','POST'])
 @login_required
