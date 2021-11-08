@@ -15,27 +15,10 @@
     integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- tinymce  -->
-  <script src="https://cdn.tiny.cloud/1/7yhcrj795zlo35jejwmwncls96d36tbzp8c30yhwj6x561lf/tinymce/5/tinymce.min.js" referrerpolicy="origin">
+  <script src="https://cdn.tiny.cloud/1/7yhcrj795zlo35jejwmwncls96d36tbzp8c30yhwj6x561lf/tinymce/5/tinymce.min.js" 
+  referrerpolicy="origin">
 </script>
-<script>
-   
-  // tinymce
-  tinymce.init({
-    selector: 'textarea#texteditor',
-    plugins: 'a11ychecker advcode casechange export formatpainter linkchecker charmap searchreplace wordcount autolink lists checklist media mediaembed pageembed permanentpen powerpaste fullscreen insertdatetime nonbreaking table advtable tinycomments tinymcespellchecker image imagetools code print preview hr anchor pagebreak save contextmenu directionality template',
-    toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter pageembed permanentpen table image code emoticons preview',
-    toolbar_mode: 'floating',
-    tinycomments_mode: 'embedded',
-    tinycomments_author: 'Author name',
 
-    images_upload_url: Flask.url_for('app.image_uploader'),
-    // relative_urls: false,
-    // images_upload_base_path: '/static/imgs/post_imgs',
-    images_reuse_filename: false,
-    // automatic_uploads: true,
-
- });
-</script>
   <!-- plugin css for this page -->
   <link rel="stylesheet"
     href="{{ url_for('static', filename = 'assets/vendors/mdi/css/materialdesignicons.min.css') }}" />
@@ -51,7 +34,7 @@
   {% if title %}
   <title>{{ title }}</title>
   {% else %}
-  <title>Blog</title>
+  <title>WorldTimes</title>
   {% endif %}
 
 </head>
@@ -423,6 +406,18 @@
   </script>
   <script src="{{ url_for('static', filename='assets/js/scripts.js') }}"></script>
   <!-- End custom js for this page-->
+
+  <script type='text/javascript'>
+    // tinymce
+    tinymce.init({
+      selector: 'textarea#texteditor',
+      plugins: 'a11ychecker advcode casechange export formatpainter linkchecker advlist autolink lists checklist image imagetools insertdatetime media mediaembed pageembed permanentpen powerpaste print table advtable tinycomments tinymcespellchecker hr anchor pagebreak',
+      toolbar: 'styleselect | bold italic forecolor | alignleft aligncenter alignright alignjustify | casechange checklist export pageembed image table print',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+   });
+  </script>
 
 </body>
 

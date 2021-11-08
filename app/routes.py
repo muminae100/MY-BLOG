@@ -167,6 +167,7 @@ def logout():
 @app.route('/newpost', methods = ['GET', 'POST'])
 @login_required
 def new_post():
+    # form =PostForm()
     # choices = [(category.id, category.category) for category in Categories.query.all()]
     # if form.validate_on_submit():
     #     article = Articles(title=form.title.data,category_id=form.category.data,
