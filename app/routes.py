@@ -2,14 +2,16 @@ import timeago,datetime
 import os
 import secrets
 from PIL import Image
-from flask import render_template,redirect,request,url_for,flash,abort
+from flask import render_template,redirect,request,url_for,flash,abort,jsonify
 from app import app,db,bcrypt,mail
-from app.models import Users,Articles,Images,Comments,ContactInfo,SocialMediaAccounts
+from app.models import Users,Articles,Images,Comments,ContactInfo,SocialMediaAccounts,Categories
 from flask_login import login_user,current_user,logout_user,login_required
 from app.forms import (RegistrationForm,LoginForm,UpdateAccountForm,
 PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,SendNotificationsForm,ContactInfoForm,
 SocialMediaAccountsForm)
 from flask_mail import Message
+
+
 
 @app.route('/contacts_info')
 @login_required
@@ -165,23 +167,23 @@ def logout():
 @app.route('/newpost', methods = ['GET', 'POST'])
 @login_required
 def new_post():
-    form = PostForm()
-    if form.validate_on_submit():
-        if form.cover_picture.data:
-            picture_file = save_picture(form.cover_picture.data)
-            image = Images(image=picture_file,article_id=1)
-            db.session.add(image)
-        article = Articles(title=form.title.data,category=form.category.data,
-        content=form.content.data,author=current_user)
-        db.session.add(article)
-        db.session.commit()
-        flash('Your have successfully posted a new article!', 'success')
-        return redirect(url_for('index'))
-    return render_template('new_posts.html', title = 'New post', form = form, legend = 'Create new post')
+    # choices = [(category.id, category.category) for category in Categories.query.all()]
+    # if form.validate_on_submit():
+    #     article = Articles(title=form.title.data,category_id=form.category.data,
+    #     content=form.content.data,author=current_user)
+    #     db.session.add(article)
+    #     db.session.commit()
+    #     flash('Your have successfully posted a new article!', 'success')
+    #     return redirect(url_for('post',id=article.id))
+    return render_template('new_posts.html', title = 'New post')
 
 @app.route('/post/<int:id>', methods = ['GET', 'POST'])
 def post(id):
     article = Articles.query.get_or_404(id)
+    for i in article.images:
+        img=i.imagename
+        imgdesc=i.imagedescription
+    image = url_for('static', filename = 'imgs/post_imgs/' + img)
     posts = Articles.query.order_by(Articles.date_posted.desc()).all()
     comments = article.userscomments
     now = datetime.datetime.now() 
@@ -194,7 +196,7 @@ def post(id):
         flash('Your have successfully added your comment!', 'success')
         return redirect(url_for('post',id = id))
     return render_template('post.html', title=article.title, article = article,
-    form=form,posts=posts,comments=comments,time_posted=time_posted)
+    form=form,posts=posts,comments=comments,time_posted=time_posted,image=image,imgdesc=imgdesc)
 
 @app.route('/post/<int:id>/update', methods = ['GET', 'POST'])
 @login_required

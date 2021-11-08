@@ -11,3 +11,19 @@ function openNav() {
   $('.search-button').click(function(){
     $(this).parent().toggleClass('open');
   });
+
+//  get data from textarea
+
+$(document).ready(function(){
+
+	$("#postform").submit(function(e){
+
+		var content = tinymce.get("texteditor").getContent();
+
+		$("#data-preview-container").html(content);
+
+		return false;
+
+	});
+
+});

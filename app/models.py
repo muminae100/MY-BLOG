@@ -39,21 +39,28 @@ class Users(db.Model, UserMixin):
 class Articles(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(100), nullable = False)
-    category = db.Column(db.String(200), nullable = False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable = False)
     content = db.Column(db.Text, nullable = False)
     date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow) 
-    slug = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
-    imgs = db.relationship('Images',backref = 'article',lazy = True)
+    images = db.relationship('Images',backref = 'article',lazy = True)
     userscomments = db.relationship('Comments', backref = 'its_article', lazy = True)
 
     def __repr__(self):
         return f"Article('{self.id}','{self.title}','{self.date_posted}')"
 
+class Categories(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    categoryname = db.Column(db.String(200), nullable = False)
+    articles = db.relationship('Articles', backref = 'category', lazy = True)
+
+    def __repr__(self):
+        return f"Categories('{self.id}','{self.category}')"
 
 class Images(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    image = db.Column(db.String(20))
+    imagename = db.Column(db.String(100))
+    imagedescription= db.Column(db.String(200))
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id'), nullable = False)
 
     def __repr__(self):

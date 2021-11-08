@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,PasswordField,SubmitField,BooleanField, TextAreaField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField, TextAreaField,SelectField
 from wtforms.validators import DataRequired,Length,Email,EqualTo,ValidationError
-from app.models import Users
+from app.models import Categories, Users
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
@@ -53,10 +53,14 @@ class UpdateAccountForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
-    category = StringField('Category', validators=[DataRequired()])
+    category = SelectField(u'Category', choices=[], validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
-    cover_picture = FileField('Cover picture', validators=[DataRequired(),FileAllowed(['jpg','png','jpeg'])])
     submit = SubmitField('Post')
+
+
+class PreviewForm(FlaskForm):
+    cover_picture = FileField('Cover picture',[FileAllowed(['jpg','png','jpeg'])])
+    submit = SubmitField('Upload')
 
 class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
@@ -77,11 +81,6 @@ class ContactForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
     message = TextAreaField('Message', validators=[DataRequired()])
     submit = SubmitField('Send')
-
-    def validate_email(self,email):
-        user = Users.query.filter_by(email = email.data).first()
-        if user is None:
-            raise ValidationError('Email does not exist!')
 
 class CommentsForm(FlaskForm):
     comments = TextAreaField('Comments', validators=[DataRequired()])

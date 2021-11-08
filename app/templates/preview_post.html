@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block body %}
+<div style="background-color: white;" class="container mb-5 mt-5 p-5">
+{{ article.title }} <br>
+{{article.content}} <br>
+{{ article.category.category }} <br>
+{{ article.author.username }} <br>
+{{ article.images }} <br>
+{{ article.userscomments }}
+<div>
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom md-4">Upload cover pictures</legend>
+                <div class="form-group">
+                    {{ form.cover_picture.label() }}
+                    {{ form.cover_picture(class="form-control-file") }}
+                    {% if form.cover_picture.errors %}
+                    {% for error in form.cover_picture.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    <br>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock body %}

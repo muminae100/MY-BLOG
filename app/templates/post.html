@@ -9,85 +9,23 @@
             <div class="col-lg-8">
               <div>
                 <h1 class="font-weight-600 mb-1">
-                  I shouted above the sudden noise.
+                  {{ article.title }}
                 </h1>
                 <p class="fs-13 text-muted mb-0">
-                  <span class="mr-2">Photo </span>{{ time_posted }}
+                  <span class="mr-2">{{ article.category.categoryname }} </span>{{ time_posted }}
                 </p>
                 <div class="rotate-img">
                   <img
-                    src="{{ url_for('static', filename = 'assets/images/inner/inner_1.jpg') }}"
-                    alt="banner"
+                    src="{{ image }}"
                     class="img-fluid mt-4 mb-4"
                   />
                 </div>
                 <p class="mb-4 fs-15">
-                  He has led a remarkable campaign, defying the
-                  traditional mainstream parties courtesy of his En
-                  Marche! movement. For many, however, the campaign has
-                  become less about backing Macron and instead about
-                  voting against Le Pen, the National Front candidate.
+                  <i style="background-color: #f2f2f2;padding: 10px;">{{ imgdesc }}</i>
                 </p>
               </div>
-              <div>
-                <h1 class="font-weight-600 mb-1">
-                  Boy arrives at Disappeared dig site
-                </h1>
-                <div class="rotate-img">
-                  <img
-                    src="{{ url_for('static', filename = '/assets/images/inner/inner_2.jpg') }}"
-                    alt="banner"
-                    class="img-fluid mt-4 mb-4"
-                  />
-                </div>
-                <p class="mb-4 fs-15">
-                  He has led a remarkable campaign, defying the
-                  traditional mainstream parties courtesy of his En
-                  Marche! movement. For many, however, the campaign has
-                  become less about backing Macron and instead about
-                  voting against Le Pen, the National Front candidate.He
-                  has led a remarkable campaign, defying the traditional
-                  mainstream parties courtesy of his En Marche!
-                  movement. For many, however, the campaign has become
-                  less about backing Macron and instead about voting
-                  against Le Pen, the National Front candidate.
-                </p>
-              </div>
-              <div>
-                <h1 class="font-weight-600 mb-1">
-                  The Conclusion
-                </h1>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="rotate-img">
-                      <img
-                        src="{{ url_for('static', filename = 'assets/images/inner/inner_3.jpg') }}"
-                        alt="banner"
-                        class="img-fluid mt-4 mb-4"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="rotate-img">
-                      <img
-                        src="{{ url_for('static', filename = 'assets/images/inner/inner_4.jpg') }}"
-                        alt="banner"
-                        class="img-fluid mt-4 mb-4"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <p class="mb-4 fs-15">
-                  Mauris mattis auctor cursus. Phasellus tellus tellus,
-                  imperdiet ut imperdiet eu, iaculis a sem. Donec
-                  vehicula luctus nunc in laoreet. Aliquam erat
-                  volutpat. Suspendisse vulputate porttitor mentum.
-                  Proin viverra orci a leo suscipit placerat. Sed
-                  feugiat posuere semper. Cras vitae mi erat, Vestibulum
-                  faucibus neque at lacus tristique eu ultrices ipsum
-                  mollis.
-                </p>
+              <div class="post-content">
+                content....
               </div>
               <div class="d-lg-flex">
                 <span class="fs-16 font-weight-600 mr-2 mb-1"
