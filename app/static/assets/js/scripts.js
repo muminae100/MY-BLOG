@@ -14,10 +14,9 @@ function openNav() {
 
 //  get data from textarea
 
-$(document).ready(function(){
 
-	$("#postform").submit(function(e){
 
+	$("#new-post-form").submit(function(e){
 		var content = tinymce.get("texteditor").getContent();
 
 		$("#data-preview-container").html(content);
@@ -26,4 +25,3 @@ $(document).ready(function(){
 
 	});
 
-});

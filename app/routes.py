@@ -183,16 +183,22 @@ def logout():
 @app.route('/newpost', methods = ['GET', 'POST'])
 @login_required
 def new_post():
-    # form =PostForm()
-    # choices = [(category.id, category.category) for category in Categories.query.all()]
-    # if form.validate_on_submit():
-    #     article = Articles(title=form.title.data,category_id=form.category.data,
-    #     content=form.content.data,author=current_user)
-    #     db.session.add(article)
-    #     db.session.commit()
-    #     flash('Your have successfully posted a new article!', 'success')
-    #     return redirect(url_for('post',id=article.id))
-    return render_template('new_posts.html', title = 'New post')
+    form =PostForm()
+    form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
+    if form.validate_on_submit():
+        content = request.form.get('text-editor')
+        article = Articles(title=form.title.data,category_id=form.category.data,
+        content=content,author=current_user)
+        db.session.add(article)
+        db.session.commit()
+        # if form.cover_picture.data:
+        #     picture_file = save_picture(form.cover_picture.data)
+        #     image = Images(image=picture_file,article_id=article.id)
+        #     db.session.add(image)
+        #     db.session.commit()
+        flash('Your have successfully posted a new article!', 'success')
+        return redirect(url_for('preview'))
+    return render_template('new_posts.html', title = 'New post',form=form)
 
 @app.route('/post/<int:id>', methods = ['GET', 'POST'])
 def post(id):

@@ -54,6 +54,7 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     category = SelectField(u'Category', choices=[], validators=[DataRequired()])
+    cover_picture = FileField('Cover picture', validators=[FileAllowed(['jpg','png','jpeg'])])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
 
