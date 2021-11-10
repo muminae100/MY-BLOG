@@ -59,8 +59,8 @@ class Categories(db.Model):
 
 class Images(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    imagename = db.Column(db.String(100))
-    imagedescription= db.Column(db.String(200))
+    imagename = db.Column(db.String(100), nullable = False)
+    imagedescription= db.Column(db.String(200), nullable = False)
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id'), nullable = False)
 
     def __repr__(self):

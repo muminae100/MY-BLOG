@@ -6,7 +6,7 @@ from flask import render_template,redirect,request,url_for,flash,abort,jsonify
 from app import app,db,bcrypt,mail
 from app.models import Users,Articles,Images,Comments,ContactInfo,SocialMediaAccounts,Categories
 from flask_login import login_user,current_user,logout_user,login_required
-from app.forms import (RegistrationForm,LoginForm,UpdateAccountForm,
+from app.forms import (PreviewForm, RegistrationForm,LoginForm,UpdateAccountForm,
 PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,SendNotificationsForm,ContactInfoForm,
 SocialMediaAccountsForm)
 from flask_mail import Message
@@ -186,19 +186,30 @@ def new_post():
     form =PostForm()
     form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
     if form.validate_on_submit():
-        content = request.form.get('text-editor')
         article = Articles(title=form.title.data,category_id=form.category.data,
-        content=content,author=current_user)
+        content=form.content.data,author=current_user)
         db.session.add(article)
         db.session.commit()
-        # if form.cover_picture.data:
-        #     picture_file = save_picture(form.cover_picture.data)
-        #     image = Images(image=picture_file,article_id=article.id)
-        #     db.session.add(image)
-        #     db.session.commit()
-        flash('Your have successfully posted a new article!', 'success')
-        return redirect(url_for('preview'))
+        flash('Your post is ready for preview!', 'success')
+        return redirect(url_for('preview',id=article.id))
     return render_template('new_posts.html', title = 'New post',form=form)
+
+@app.route('/preview/<int:id>', methods = ['GET', 'POST'])
+@login_required
+def preview(id):
+    article = Articles.query.get_or_404(int(id))
+    if article.author != current_user:
+        abort(404)
+    form = PreviewForm()
+    if form.validate_on_submit():
+        picture_file = save_picture(form.cover_picture.data)
+        img_desc = form.pic_desc.data
+        image = Images(imagename=picture_file,imagedescription=img_desc,article_id=article.id)
+        db.session.add(image)
+        db.session.commit()
+        flash('Your have successfully posted a new article!', 'success')
+        return redirect(url_for('post',id=article.id))
+    return render_template('pages/preview_post.html',form=form,title='Preview post',article=article)
 
 @app.route('/post/<int:id>', methods = ['GET', 'POST'])
 def post(id):
@@ -238,7 +249,8 @@ def updatepost(id):
         return redirect(url_for('post',id = article.id))
     elif request.method == 'GET':
         form.title.data = article.title
-        form.category.data = article.category
+        # form.category.data = article.category
+        form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
         form.content.data = article.content
     return render_template('new_posts.html', title = 'Update post', form = form, legend = 'Update post')
 

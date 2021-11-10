@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block body %}
+<div style="background-color: white;" class="container mb-5 mt-5 p-5">
+    <form name="new-post-form" action="" method="POST">
+        {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+               <legend class="border-bottom md-4">Preview post</legend>
+<div class="form-group">
+    {{ form.cover_picture.label() }}
+    {{ form.cover_picture(class="form-control-file",id="img_file") }}
+    {% if form.cover_picture.errors %}
+    {% for error in form.cover_picture.errors %}
+    <span class="text-danger">{{ error }}</span>
+    <br>
+    {% endfor %}
+    {% endif %}
+</div>
+<div class="form-group">
+    {{ form.pic_desc.label(class="form-control-label") }}
+    {% if form.pic_desc.errors %}
+    {{ form.pic_desc(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+        {% for error in form.title.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    {% else %}
+    {{ form.pic_desc(class="form-control form-control-lg") }}
+    {% endif %}
+</div>
+</fieldset>
+<div class="form-group">
+    {{ form.submit(class="btn btn-success") }}
+</div>
+</form>
+<div class="mt-5 p-3">
+    <div>
+        <h1 class="font-weight-600 mb-1">
+          {{ article.title }}
+        </h1>
+        <p class="fs-13 text-muted mb-0">
+          <span class="mr-2">{{ article.category.categoryname }}
+        </p>
+      </div>
+      <div class="post-content-preview">
+      </div>
+</div>
+<div>
+    <a class="btn btn-info" href="{{ url_for('updatepost',id=article.id) }}">Edit post</a>
+</div>
+</div>
+<script>
+// converts HTML to text using Javascript
+html = '<p>I love coding!</p>'
+function html2text(html) {
+    var tag = document.createElement('div');
+    tag.innerHTML = html;
+
+    document.querySelector('.post-content-preview').innerHTML = tag;
+}  
+</script>
+
+{% endblock body %}

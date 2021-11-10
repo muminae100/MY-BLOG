@@ -14,14 +14,12 @@ function openNav() {
 
 //  get data from textarea
 
+	// $("#new-post-form").submit(function(e){
+	// 	var content = tinymce.get("texteditor").getContent();
 
+	// 	$("#data-preview-container").html(content);
 
-	$("#new-post-form").submit(function(e){
-		var content = tinymce.get("texteditor").getContent();
+	// 	return false;
 
-		$("#data-preview-container").html(content);
-
-		return false;
-
-	});
+	// });
 
