@@ -54,14 +54,11 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     category = SelectField(u'Category', choices=[], validators=[DataRequired()])
+    cover_picture = FileField('Cover image', validators=[FileAllowed(['jpg','png','jpeg','gif'])])
+    pic_desc = StringField('Cover image description', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
 
-
-class PreviewForm(FlaskForm):
-    cover_picture = FileField('Cover image', validators=[FileAllowed(['jpg','png','jpeg'])])
-    pic_desc = StringField('Cover image description', validators=[DataRequired()])
-    submit = SubmitField('Upload')
 
 class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])

@@ -108,6 +108,20 @@ def save_picture(form_picture):
     i.save(picture_path)
     return picture_fn
 
+
+def save_cover_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _,f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/imgs/cover_imgs', picture_fn)
+
+    output_size = (250, 250)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+
+    i.save(picture_path)
+    return picture_fn
+
 @app.route('/img_upload', methods=['POST'])
 @login_required
 def img_uploader():
@@ -187,8 +201,9 @@ def new_post():
     form =PostForm()
     form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
     if form.validate_on_submit():
+        cover_img = save_cover_picture(form.cover_picture.data)
         article = Articles(title=form.title.data,category_id=form.category.data,
-        content=form.content.data,author=current_user)
+        content=form.content.data,author=current_user,cover_img=cover_img)
         db.session.add(article)
         db.session.commit()
         flash('Your post is ready for preview!', 'success')
@@ -201,16 +216,8 @@ def preview(id):
     article = Articles.query.get_or_404(int(id))
     if article.author != current_user:
         abort(404)
-    form = PreviewForm()
-    if form.validate_on_submit():
-        picture_file = save_picture(form.cover_picture.data)
-        img_desc = form.pic_desc.data
-        image = Images(imagename=picture_file,imagedescription=img_desc,article_id=article.id)
-        db.session.add(image)
-        db.session.commit()
-        flash('Your have successfully posted a new article!', 'success')
-        return redirect(url_for('post',id=article.id))
-    return render_template('preview_post.html',form=form,title='Preview post',article=article)
+       
+    return render_template('preview_post.html',title='Preview post',article=article)
 
 @app.route('/post/<int:id>', methods = ['GET', 'POST'])
 def post(id):
