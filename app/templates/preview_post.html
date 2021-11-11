@@ -43,21 +43,12 @@
         </p>
       </div>
       <div class="post-content-preview">
+          {{ article.content | safe }}
       </div>
 </div>
 <div>
     <a class="btn btn-info" href="{{ url_for('updatepost',id=article.id) }}">Edit post</a>
 </div>
 </div>
-<script>
-// converts HTML to text using Javascript
-html = '<p>I love coding!</p>'
-function html2text(html) {
-    var tag = document.createElement('div');
-    tag.innerHTML = html;
-
-    document.querySelector('.post-content-preview').innerHTML = tag;
-}  
-</script>
 
 {% endblock body %}

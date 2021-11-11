@@ -55,7 +55,7 @@ class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     category = SelectField(u'Category', choices=[], validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Preview')
+    submit = SubmitField('Post')
 
 
 class PreviewForm(FlaskForm):

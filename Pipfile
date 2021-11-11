@@ -16,6 +16,7 @@ email-validator = "*"
 colorama = "*"
 babel = "*"
 timeago = "*"
+bleach = "*"
 
 [dev-packages]
 

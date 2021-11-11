@@ -1,4 +1,5 @@
 import timeago,datetime
+import bleach
 import os
 import secrets
 from PIL import Image
@@ -119,8 +120,8 @@ def img_uploader():
     output_size = (250, 250)
     i = Image.open(img)
     i.thumbnail(output_size)
-
     i.save(picture_path)
+
     pic_location = url_for('static', filename = 'imgs/post_imgs/' + picture_fn)
     return jsonify({'location': pic_location})
 
@@ -194,7 +195,7 @@ def new_post():
         return redirect(url_for('preview',id=article.id))
     return render_template('new_posts.html', title = 'New post',form=form)
 
-@app.route('/preview/<int:id>', methods = ['GET', 'POST'])
+@app.route('/<int:id>', methods = ['GET', 'POST'])
 @login_required
 def preview(id):
     article = Articles.query.get_or_404(int(id))
@@ -209,7 +210,7 @@ def preview(id):
         db.session.commit()
         flash('Your have successfully posted a new article!', 'success')
         return redirect(url_for('post',id=article.id))
-    return render_template('pages/preview_post.html',form=form,title='Preview post',article=article)
+    return render_template('preview_post.html',form=form,title='Preview post',article=article)
 
 @app.route('/post/<int:id>', methods = ['GET', 'POST'])
 def post(id):
