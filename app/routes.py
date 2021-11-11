@@ -1,13 +1,12 @@
 import timeago,datetime
-import bleach
 import os
 import secrets
 from PIL import Image
 from flask import render_template,redirect,request,url_for,flash,abort,jsonify
 from app import app,db,bcrypt,mail
-from app.models import Users,Articles,Images,Comments,ContactInfo,SocialMediaAccounts,Categories
+from app.models import Users,Articles,Comments,ContactInfo,SocialMediaAccounts,Categories
 from flask_login import login_user,current_user,logout_user,login_required
-from app.forms import (PreviewForm, RegistrationForm,LoginForm,UpdateAccountForm,
+from app.forms import (RegistrationForm,LoginForm,UpdateAccountForm,
 PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,SendNotificationsForm,ContactInfoForm,
 SocialMediaAccountsForm)
 from flask_mail import Message
@@ -201,31 +200,22 @@ def new_post():
     form =PostForm()
     form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
     if form.validate_on_submit():
-        cover_img = save_cover_picture(form.cover_picture.data)
         article = Articles(title=form.title.data,category_id=form.category.data,
-        content=form.content.data,author=current_user,cover_img=cover_img)
+        content=form.content.data,author=current_user,cover_img='ronaldo.jpeg',pic_desc=form.pic_desc.data)
+        # if form.cover_picture.data:
+        #     cover_img = save_cover_picture(form.cover_picture.data)
+        #     article.cover_img = cover_img
         db.session.add(article)
         db.session.commit()
         flash('Your post is ready for preview!', 'success')
-        return redirect(url_for('preview',id=article.id))
+        return redirect(url_for('post',id=article.id))
     return render_template('new_posts.html', title = 'New post',form=form)
 
 @app.route('/<int:id>', methods = ['GET', 'POST'])
-@login_required
-def preview(id):
-    article = Articles.query.get_or_404(int(id))
-    if article.author != current_user:
-        abort(404)
-       
-    return render_template('preview_post.html',title='Preview post',article=article)
-
-@app.route('/post/<int:id>', methods = ['GET', 'POST'])
 def post(id):
     article = Articles.query.get_or_404(id)
-    for i in article.images:
-        img=i.imagename
-        imgdesc=i.imagedescription
-    image = url_for('static', filename = 'imgs/post_imgs/' + img)
+    image = url_for('static', filename = 'imgs/post_imgs/' + article.cover_img)
+    img_desc = article.pic_desc
     posts = Articles.query.order_by(Articles.date_posted.desc()).all()
     comments = article.userscomments
     now = datetime.datetime.now() 
@@ -238,7 +228,7 @@ def post(id):
         flash('Your have successfully added your comment!', 'success')
         return redirect(url_for('post',id = id))
     return render_template('post.html', title=article.title, article = article,
-    form=form,posts=posts,comments=comments,time_posted=time_posted,image=image,imgdesc=imgdesc)
+    form=form,posts=posts,comments=comments,time_posted=time_posted,image=image,img_desc=img_desc)
 
 @app.route('/post/<int:id>/update', methods = ['GET', 'POST'])
 @login_required

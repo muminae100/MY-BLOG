@@ -44,6 +44,7 @@ class Articles(db.Model):
     date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
     cover_img = db.Column(db.String(100), nullable = False)
+    pic_desc = db.Column(db.String(100), nullable = False)
     userscomments = db.relationship('Comments', backref = 'its_article', lazy = True)
 
     def __repr__(self):
@@ -55,7 +56,7 @@ class Categories(db.Model):
     articles = db.relationship('Articles', backref = 'category', lazy = True)
 
     def __repr__(self):
-        return f"Categories('{self.id}','{self.category}')"
+        return f"Categories('{self.id}','{self.categoryname}')"
 
 
 class Comments(db.Model):

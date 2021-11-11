@@ -15,7 +15,7 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                        {{ form.title(class="form-control form-control-lg",id="title") }}
+                        {{ form.title(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
@@ -28,12 +28,12 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                        {{ form.category(class="form-control form-control-lg",id="category") }}
+                        {{ form.category(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
                     {{ form.cover_picture.label() }}
-                    {{ form.cover_picture(class="form-control-file",id="img_file") }}
+                    {{ form.cover_picture(class="form-control-file") }}
                     {% if form.cover_picture.errors %}
                     {% for error in form.cover_picture.errors %}
                     <span class="text-danger">{{ error }}</span>
