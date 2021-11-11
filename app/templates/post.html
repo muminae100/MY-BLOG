@@ -137,12 +137,12 @@
                       </div>
                       <div>
                         <p class="fs-12 mb-1 line-height-xs">
-                          Of the Author
+                         Author
                         </p>
                         <p
                           class="fs-16 font-weight-600 mb-0 line-height-xs"
                         >
-                          Nout Golstein
+                        {{ article.author.username }}
                         </p>
                       </div>
                     </div>
@@ -165,10 +165,7 @@
                     </ul>
                   </div>
                   <p class="fs-12">
-                    Praesent facilisis vulputate venenatis. In facilisis
-                    placerat arcu, in tempor neque aliquet quis. Integer
-                    lacinia in ligula eu sodales. Proin non lorem
-                    iaculis, dictum lorem quis, bibendum leo.
+                    {{ article.author.bio }}
                   </p>
                 </div>
                 <div class="comment-section">
