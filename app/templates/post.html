@@ -77,6 +77,8 @@
                   >Trending</span
                 >
               </div>
+              
+            
               <div class="post-comment-section">
                 <h3 class="font-weight-600">Related Posts</h3>
                 <div class="row">
@@ -122,16 +124,14 @@
                   </div>
                 </div>
 
-
-                <div class="testimonial">
+                <div class="testimonial mt-5">
                   <div
                     class="d-lg-flex justify-content-between align-items-center"
                   >
                     <div class="d-flex align-items-center mb-3">
                       <div class="rotate-img">
-                        <img
-                          src="{{ url_for('static', filename = 'assets/images/faces/face1.jpg') }}"
-                          alt="banner"
+                        <img style="width: 40px;height: 40px;"
+                          src="{{ url_for('static', filename = 'imgs/profile_pics/' + article.author.profile_pic) }}"
                           class="img-fluid img-rounded mr-3"
                         />
                       </div>
@@ -168,6 +168,7 @@
                     {{ article.author.bio }}
                   </p>
                 </div>
+
                 <div class="comment-section">
                   <h5 class="font-weight-600">Comments</h5>
                   <div class="comment-box">

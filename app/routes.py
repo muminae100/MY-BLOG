@@ -4,57 +4,12 @@ import secrets
 from PIL import Image
 from flask import render_template,redirect,request,url_for,flash,abort,jsonify
 from app import app,db,bcrypt,mail
-from app.models import Users,Articles,Comments,ContactInfo,SocialMediaAccounts,Categories
+from app.models import Users,Articles,Comments,Categories
 from flask_login import login_user,current_user,logout_user,login_required
 from app.forms import (RegistrationForm,LoginForm,UpdateAccountForm,
-PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,SendNotificationsForm,ContactInfoForm,
-SocialMediaAccountsForm)
+PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,
+SendNotificationsForm,AuthorRegistrationForm,AuthorUpdateAccountForm)
 from flask_mail import Message
-
-
-
-@app.route('/contacts_info')
-@login_required
-def contact_info():
-    contacts = ContactInfo.query.all()
-    form = ContactInfoForm()
-    if form.validate_on_submit():
-        company_name = form.company.data
-        address = form.address.data
-        phone = form.phone.data
-        email = form.email.data
-        city = form.city.data
-
-        contacts = ContactInfo.query.first()
-        contacts.company_name = company_name
-        contacts.address = address
-        contacts.phone = phone
-        contacts.email = email
-        contacts.city = city
-        db.session.commit()
-
-    return render_template('admin/contacts_info.html',form=form,title='Contact information')
-
-@app.route('/social_media_accounts')
-@login_required
-def social_media_accounts():
-    accounts = SocialMediaAccounts.query.all()
-    form = SocialMediaAccountsForm()
-    if form.validate_on_submit():
-        facebook = form.facebook.data
-        instagram = form.instagram.data
-        twitter = form.twitter.data
-        youtube = form.youtube.data
-        
-
-        contacts = ContactInfo.query.first()
-        contacts.facebook = facebook
-        contacts.instagarm = instagram
-        contacts.twitter = twitter
-        contacts.youtube = youtube
-        db.session.commit()
-
-    return render_template('admin/social_media_accounts.html',form=form,title='Social media accounts')
 
 
 @app.route('/')
@@ -187,12 +142,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-
-
-
-
-
-
 # posts
 @app.route('/newpost', methods = ['GET', 'POST'])
 @login_required
@@ -297,9 +246,6 @@ If you did not make this request simply ignore this email and no changes will be
     mail.send(msg)
 
 
-
-
-
 @app.route('/reset_password', methods = ['GET','POST'])
 def reset_request():
     form = RequestResetForm()
@@ -324,10 +270,6 @@ def reset_token(token):
         flash(f'Your password has been updated! You are now able to login and access your account', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title = 'Reset Password', form = form)
-
-
-
-
 
 
 @app.route('/search')
@@ -484,31 +426,6 @@ def privacy_policy():
     return render_template('privacy_policy.html', title='Privacy policy')
 
 
-@app.route('/magazine')
-def magazine():
-    return render_template('pages/categories.html', heading='Magazine')
-
-@app.route('/business')
-def business():
-    return render_template('pages/categories.html', heading='Business')
-
-@app.route('/sports')
-def sports():
-    return render_template('pages/categories.html', heading='Sports')
-
-@app.route('/art')
-def art():
-    return render_template('pages/categories.html', heading='Art')
-
-@app.route('/politics')
-def politics():
-    return render_template('pages/categories.html', heading='Politics')
-
-@app.route('/travel')
-def travel():
-    return render_template('pages/categories.html', heading='Travel')
-
-@app.route('/about')
-def about():
-    return render_template('pages/aboutus.html')
-
+@app.route('/<string:category>')
+def category(category):
+    return render_template('pages/categories.html', heading=category)
