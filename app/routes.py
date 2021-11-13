@@ -4,7 +4,7 @@ import secrets
 from PIL import Image
 from flask import render_template,redirect,request,url_for,flash,abort,jsonify
 from app import app,db,bcrypt,mail
-from app.models import Users,Articles,Comments,Categories
+from app.models import Users,Articles,Comments,Categories,Tags
 from flask_login import login_user,current_user,logout_user,login_required
 from app.forms import (RegistrationForm,LoginForm,UpdateAccountForm,
 PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,
@@ -180,6 +180,7 @@ def post(id):
     article = Articles.query.get_or_404(id)
     image = url_for('static', filename = 'imgs/post_imgs/' + article.cover_img)
     img_desc = article.pic_desc
+    tags = article.its_tags
     posts = Articles.query.order_by(Articles.date_posted.desc()).all()
     comments = article.userscomments
     now = datetime.datetime.now() 
@@ -192,7 +193,7 @@ def post(id):
         flash('Your have successfully added your comment!', 'success')
         return redirect(url_for('post',id = id))
     return render_template('post.html', title=article.title, article = article,
-    form=form,posts=posts,comments=comments,time_posted=time_posted,image=image,img_desc=img_desc)
+    form=form,posts=posts,comments=comments,time_posted=time_posted,image=image,img_desc=img_desc,tags=tags)
 
 @app.route('/post/<int:id>/update', methods = ['GET', 'POST'])
 @login_required
@@ -240,13 +241,15 @@ def user_posts(username):
     return render_template('author_posts.html',articles = articles, user=user)
 
 
-@app.route('/category/<string:category>')
-def categories(category):
-    page = request.args.get('page', 1, type=int)
-    articles = Articles.query.filter_by(category=category)\
-        .order_by(Articles.date_posted.desc())\
-        .paginate(per_page=20, page=page)
-    return render_template('pages/categories.html',articles = articles,heading=category)
+@app.route('/category/<int:category_id>')
+def categories(category_id):
+    category = Categories.query.get_or_404(category_id)
+    articles = category.articles
+    # page = request.args.get('page', 1, type=int)
+    # articles = Articles.query.filter_by(category=category)\
+    #     .order_by(Articles.date_posted.desc())\
+    #     .paginate(per_page=20, page=page)
+    return render_template('pages/categories.html',articles = articles,heading=category.categoryname)
 
 def send_reset_email(user):
     token = user.get_reset_token()
@@ -443,3 +446,13 @@ def privacy_policy():
 @app.route('/about')
 def about():
     return render_template('pages/aboutus.html')
+
+@app.route('/tag/<int:tagid>')
+def tags(tagid):
+    # page = request.args.get('page', 1, type=int)
+    tag = Tags.query.get_or_404(tagid)
+    articles = tag.articles
+    # articles = Articles.query.filter_by(its_tags=tag)\
+    #     .order_by(Articles.date_posted.desc())\
+    #     .paginate(per_page=20, page=page)
+    return render_template('pages/tags.html',articles = articles,heading=tag.tagname)

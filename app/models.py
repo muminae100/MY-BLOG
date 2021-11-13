@@ -67,18 +67,18 @@ class Articles(db.Model):
 
 class Categories(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    categoryname = db.Column(db.String(200), nullable = False)
+    categoryname = db.Column(db.String(200), nullable = False,unique=True)
     articles = db.relationship('Articles', backref = 'category', lazy = True)
-
+    tags = db.relationship('Tags', backref = 'its_category', lazy = True)
     def __repr__(self):
         return f"Categories('{self.id}','{self.categoryname}')"
 
 
 class Tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tagname = db.Column(db.String(200), nullable = False)
+    tagname = db.Column(db.String(200), nullable = False, unique=True)
     articles = db.relationship("Articles", secondary=association_table, backref=db.backref('its_tags', lazy= 'dynamic'))
-
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable = False)
     def __repr__(self):
         return f"Tags('{self.id}','{self.tagname}')"
 

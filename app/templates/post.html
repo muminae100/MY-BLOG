@@ -12,7 +12,9 @@
                   {{ article.title }}
                 </h1>
                 <p class="fs-13 text-muted mb-0">
-                  <span class="mr-2">{{ article.category.categoryname }} </span>{{ time_posted }}
+                  <span class="mr-2"><a href="{{ url_for('categories',category_id=article.category.id) }}">
+                    {{ article.category.categoryname }}</a> 
+                  </span>{{ time_posted }}
                 </p>
                 <div class="rotate-img">
                   <img
@@ -59,24 +61,19 @@
                 </div>
               </div>
           {% endif %}
-<!-- 
+
               <div class="d-lg-flex">
                 <span class="fs-16 font-weight-600 mr-2 mb-1"
                   >Tags</span
                 >
+                {% for tag in tags %}
+                <a href="{{ url_for('tags',tagid=tag.id) }}">
                 <span class="badge badge-outline-dark mr-2 mb-1"
-                  >Trending</span
+                  >{{ tag.tagname }}</span
                 >
-                <span class="badge badge-outline-dark mr-2 mb-1"
-                  >Trending</span
-                ><span class="badge badge-outline-dark mr-2 mb-1"
-                  >Trending</span
-                ><span class="badge badge-outline-dark mr-2 mb-1"
-                  >Trending</span
-                ><span class="badge badge-outline-dark mb-1"
-                  >Trending</span
-                >
-              </div> -->
+                </a>
+                {% endfor %}
+              </div>
               
             
               <div class="post-comment-section">
