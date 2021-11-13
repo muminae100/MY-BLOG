@@ -59,7 +59,7 @@
                 </div>
               </div>
           {% endif %}
-
+<!-- 
               <div class="d-lg-flex">
                 <span class="fs-16 font-weight-600 mr-2 mb-1"
                   >Tags</span
@@ -76,7 +76,7 @@
                 ><span class="badge badge-outline-dark mb-1"
                   >Trending</span
                 >
-              </div>
+              </div> -->
               
             
               <div class="post-comment-section">
@@ -148,18 +148,23 @@
                     </div>
                     <ul class="social-media mb-3">
                       <li>
-                        <a href="#">
+                        <a href="{{ article.author.facebook }}">
                           <i class="mdi mdi-facebook"></i>
                         </a>
                       </li>
                       <li>
-                        <a href="#">
+                        <a href="{{ article.author.youtube }}">
                           <i class="mdi mdi-youtube"></i>
                         </a>
                       </li>
                       <li>
-                        <a href="#">
+                        <a href="{{ article.author.twitter }}">
                           <i class="mdi mdi-twitter"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{{ article.author.instagram }}">
+                          <i class="mdi mdi-instagram"></i>
                         </a>
                       </li>
                     </ul>
@@ -171,36 +176,33 @@
 
                 <div class="comment-section">
                   <h5 class="font-weight-600">Comments</h5>
+                  {% for comment in comments %}
                   <div class="comment-box">
                     <div class="d-flex align-items-center">
                       <div class="rotate-img">
                         <img
-                          src="{{ url_for('static', filename = 'assets/images/faces/face2.jpg') }}"
-                          alt="banner"
+                          src="{{ url_for('static', filename = 'imgs/profile_pics/' + comment.writer.profile_pic ) }}"
                           class="img-fluid img-rounded mr-3"
                         />
                       </div>
                       <div>
                         <p class="fs-12 mb-1 line-height-xs">
-                          24 Jul 2020
+                         {{ comment.date_written }}
                         </p>
                         <p
                           class="fs-16 font-weight-600 mb-0 line-height-xs"
                         >
-                          Chigusa Kisa
+                        {{ comment.writer.username }}
                         </p>
                       </div>
                     </div>
 
                     <p class="fs-12 mt-3">
-                      Praesent facilisis vulputate venenatis. In
-                      facilisis placerat arcu, in tempor neque aliquet
-                      quis. Integer lacinia in ligula eu sodales. Proin
-                      non lorem iaculis, dictum lorem quis, bibendum
-                      leo.
+                      {{ comment.comment }}
                     </p>
                   </div>
-                  <div class="comment-box from">
+                  {% endfor %}
+                  <!-- <div class="comment-box from">
                     <div class="d-flex align-items-center">
                       <div class="rotate-img">
                         <img
@@ -257,8 +259,9 @@
                       non lorem iaculis, dictum lorem quis, bibendum
                       leo.
                     </p>
-                  </div>
+                  </div> -->
                 </div>
+
               </div>
             </div>
             <div class="col-lg-4">

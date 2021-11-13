@@ -45,6 +45,12 @@ class Users(db.Model, UserMixin):
     def __repr__(self):
         return str(self.username) + str(self.email) + str(self.profile_pic)
 
+
+association_table = db.Table('association_table',
+    db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
+)
+
 class Articles(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(100), nullable = False)
@@ -68,9 +74,20 @@ class Categories(db.Model):
         return f"Categories('{self.id}','{self.categoryname}')"
 
 
+class Tags(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tagname = db.Column(db.String(200), nullable = False)
+    articles = db.relationship("Articles", secondary=association_table, backref=db.backref('its_tags', lazy= 'dynamic'))
+
+    def __repr__(self):
+        return f"Tags('{self.id}','{self.tagname}')"
+
+
+
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text, nullable=False)
+    date_written = db.Column(db.DateTime, nullable = False, default = datetime.utcnow) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id'), nullable = False)
 

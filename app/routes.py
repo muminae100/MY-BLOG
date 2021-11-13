@@ -49,6 +49,21 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title = 'Register', form = form)
 
+@app.route('/register_writer', methods = ['GET','POST'])
+def writer_register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        newuser = Users(email=form.email.data,username=form.username.data,password=hashed_password)
+        db.session.add(newuser)
+        db.session.commit()
+
+        flash('Registered successfully! Login to access your account', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', title = 'Register', form = form)
+
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _,f_ext = os.path.splitext(form_picture.filename)
@@ -156,7 +171,7 @@ def new_post():
         #     article.cover_img = cover_img
         db.session.add(article)
         db.session.commit()
-        flash('Your post is ready for preview!', 'success')
+        flash('Your post has been posted successfully!', 'success')
         return redirect(url_for('post',id=article.id))
     return render_template('new_posts.html', title = 'New post',form=form)
 
@@ -425,7 +440,6 @@ def terms_conditions():
 def privacy_policy():
     return render_template('privacy_policy.html', title='Privacy policy')
 
-
-@app.route('/<string:category>')
-def category(category):
-    return render_template('pages/categories.html', heading=category)
+@app.route('/about')
+def about():
+    return render_template('pages/aboutus.html')
