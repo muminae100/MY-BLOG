@@ -142,7 +142,7 @@ def author_account():
         current_user.email = form.email.data
         current_user.bio = form.bio.data
         current_user.address = form.address.data
-        current_user.phone = form.phone.data
+        current_user.phone_number = form.phone.data
         current_user.city = form.city.data
         current_user.facebook = form.facebook.data
         current_user.instagram = form.instagram.data
@@ -156,7 +156,7 @@ def author_account():
         form.email.data = current_user.email
         form.bio.data = current_user.bio
         form.address.data = current_user.address
-        form.phone.data = current_user.phone
+        form.phone.data = current_user.phone_number
         form.city.data = current_user.city
         form.facebook.data = current_user.facebook
         form.instagram.data = current_user.instagram
@@ -241,20 +241,23 @@ def post(id):
 def updatepost(id):
     article = Articles.query.get_or_404(id)
     if article.author != current_user:
-        abort(403)
+        abort(404)
 
     form = PostForm()
+    form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
     if form.validate_on_submit():
         article.title = form.title.data
-        article.category = form.category.data
+        article.category_id = form.category.data
+        article.cover_img = form.cover_picture.data
+        article.pic_desc = form.pic_desc.data
         article.content = form.content.data
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post',id = article.id))
     elif request.method == 'GET':
         form.title.data = article.title
-        # form.category.data = article.category
-        form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
+        form.cover_picture.data = article.cover_img
+        form.pic_desc.data = article.pic_desc
         form.content.data = article.content
     return render_template('new_posts.html', title = 'Update post', form = form, legend = 'Update post')
 

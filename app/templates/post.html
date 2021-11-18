@@ -170,7 +170,7 @@
                         <h4>Share article</h4>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                           <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
-                          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
                           <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
                           <script type="IN/Share" data-url=""></script>
                         </div>                  
@@ -207,7 +207,7 @@
                       </div>
                       <div>
                         <p class="fs-12 mb-1 line-height-xs">
-                         {{ comment.date_written }} 
+                         {{ comment.date_written.strftime('%d-%m-%Y')  }} 
                         </p>
                         <p
                           class="fs-16 font-weight-600 mb-0 line-height-xs"
@@ -249,7 +249,7 @@
                         </h5>
                         </a>
                         <p class="fs-13 text-muted mb-0">
-                          <span class="mr-2">Photo </span>{{ post.date_posted }}
+                          <span class="mr-2">Photo </span>{{ post.date_posted.strftime('%d-%m-%Y')  }}
                         </p>
                       </div>
                       <div class="col-sm-4">
@@ -287,7 +287,7 @@
                   </h3>
                   </a>
                   <p class="fs-13 text-muted mb-0">
-                    <span class="mr-2">Photo </span>{{ post.date_posted }}
+                    <span class="mr-2">Photo </span>{{ post.date_posted.strftime('%d-%m-%Y')  }}
                   </p>
                 </div>
                 {% endfor %}
