@@ -62,10 +62,11 @@ def writer_register():
         current_user.city = form.city.data
         current_user.facebook = form.facebook.data
         current_user.instagram = form.instagram.data
-        current_user.youtube = form.twitter.data
+        current_user.twitter = form.twitter.data
+        current_user.youtube = form.youtube.data
         db.session.commit()
 
-        flash('Successfully registered as an author! Login to access your account', 'success')
+        flash('Successfully registered as an author!', 'success')
         return redirect(url_for('login'))
     return render_template('author_register.html', title = 'Write for us', form = form)
 
