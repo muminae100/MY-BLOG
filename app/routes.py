@@ -49,7 +49,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title = 'Register', form = form)
 
-@app.route('/register_writer', methods = ['GET','POST'])
+@app.route('/write_for_us', methods = ['GET','POST'])
 def writer_register():
     if current_user.post_author == True:
         return redirect(url_for('index'))
@@ -161,6 +161,8 @@ def logout():
 @app.route('/newpost', methods = ['GET', 'POST'])
 @login_required
 def new_post():
+    if current_user.post_author == False:
+        abort(404)
     form =PostForm()
     form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
     if form.validate_on_submit():
