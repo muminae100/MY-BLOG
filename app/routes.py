@@ -64,6 +64,7 @@ def writer_register():
         current_user.instagram = form.instagram.data
         current_user.twitter = form.twitter.data
         current_user.youtube = form.youtube.data
+        current_user.post_author = True
         db.session.commit()
 
         flash('Successfully registered as an author!', 'success')
@@ -83,19 +84,6 @@ def save_picture(form_picture):
     i.save(picture_path)
     return picture_fn
 
-
-def save_cover_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    _,f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/imgs/cover_imgs', picture_fn)
-
-    output_size = (250, 250)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-
-    i.save(picture_path)
-    return picture_fn
 
 @app.route('/img_upload', methods=['POST'])
 @login_required
@@ -175,7 +163,7 @@ def author_account():
         form.twitter.data = current_user.twitter
         form.youtube.data = current_user.youtube
     image_file = url_for('static', filename = 'imgs/profile_pics/' + current_user.profile_pic)
-    return render_template('account.html', title = current_user.username, profile_pic = image_file, form = form)
+    return render_template('author_account.html', title = current_user.username, profile_pic = image_file, form = form)
 
 def send_email_to_admin(email,message):
     msg = Message(f'Email from {email}', 
