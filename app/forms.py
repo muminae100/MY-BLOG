@@ -35,7 +35,7 @@ class AuthorRegistrationForm(FlaskForm):
     facebook = StringField('Your facebook page link')
     instagram = StringField('Your instagram account link')
     twitter = StringField('Your twitter account link')
-    youtube = StringField('Your youtube channel link(Optional)')
+    youtube = StringField('Your youtube channel link')
     submit = SubmitField('Sign Up')
 
     def validate_username(self,username):

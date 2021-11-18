@@ -119,6 +119,8 @@ def img_uploader():
 def account():
     if current_user.admin == True:
         return redirect(url_for('admin_account'))
+    if current_user.post_author == True:
+        return redirect(url_for('author_account'))
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -135,12 +137,51 @@ def account():
     image_file = url_for('static', filename = 'imgs/profile_pics/' + current_user.profile_pic)
     return render_template('account.html', title = current_user.username, profile_pic = image_file, form = form)
 
+
+@app.route('/author_account', methods = ['GET','POST'])
+@login_required
+def author_account():
+    if current_user.admin == True:
+        return redirect(url_for('admin_account'))
+    if current_user.post_author == False:
+        return redirect(url_for('account'))
+    form = AuthorUpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.profile_pic = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.bio = form.bio.data
+        current_user.address = form.address.data
+        current_user.phone = form.phone.data
+        current_user.city = form.city.data
+        current_user.facebook = form.facebook.data
+        current_user.instagram = form.instagram.data
+        current_user.twitter = form.twitter.data
+        current_user.youtube = form.youtube.data
+        db.session.commit()
+        flash('Account info has been updated!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.bio.data = current_user.bio
+        form.address.data = current_user.address
+        form.phone.data = current_user.phone
+        form.city.data = current_user.city
+        form.facebook.data = current_user.facebook
+        form.instagram.data = current_user.instagram
+        form.twitter.data = current_user.twitter
+        form.youtube.data = current_user.youtube
+    image_file = url_for('static', filename = 'imgs/profile_pics/' + current_user.profile_pic)
+    return render_template('account.html', title = current_user.username, profile_pic = image_file, form = form)
+
 def send_email_to_admin(email,message):
     msg = Message(f'Email from {email}', 
                    sender=email,
                    recipients=['smuminaetx100@gmail.com'])
     msg.body = f'''
-Hi admin WORLDNEWS!
 {message}
 '''
     mail.send(msg)
