@@ -27,22 +27,15 @@ class RegistrationForm(FlaskForm):
 
 
 class AuthorRegistrationForm(FlaskForm):
-    username = StringField('Username',
-    validators=[DataRequired(),Length(min=2,max=20)])
-    email = StringField('Email', validators=[DataRequired(),Email()])
     bio = StringField('Bio',
     validators=[DataRequired(),Length(min=20,max=500)])
     address = StringField('Address')
     phone = StringField('Phone number')
-    email = StringField('Email address', validators=[Email()])
     city = StringField('City')
-    facebook = StringField('Facebook accoun link')
-    instagram = StringField('Instagram account link')
-    youtube = StringField('Youtube account link')
-    twitter = StringField('Twitter account link')
-    password = PasswordField('password',validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
-    validators = [DataRequired(), EqualTo('password')])
+    facebook = StringField('Your facebook page link')
+    instagram = StringField('Your instagram account link')
+    twitter = StringField('Your twitter account link')
+    youtube = StringField('Your youtube channel link(Optional)')
     submit = SubmitField('Sign Up')
 
     def validate_username(self,username):

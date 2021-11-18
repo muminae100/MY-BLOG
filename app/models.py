@@ -19,7 +19,6 @@ class Users(db.Model, UserMixin):
     the_comments = db.relationship('Comments', backref='writer',lazy=True)
     post_author = db.Column(db.Boolean, nullable=False, default=False)
     address = db.Column(db.String(50))
-    email = db.Column(db.String(50))
     phone_number = db.Column(db.String(50))
     city = db.Column(db.String(50))
     facebook = db.Column(db.String(50))

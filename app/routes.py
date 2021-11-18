@@ -50,19 +50,24 @@ def register():
     return render_template('register.html', title = 'Register', form = form)
 
 @app.route('/write_for_us', methods = ['GET','POST'])
+@login_required
 def writer_register():
     if current_user.post_author == True:
         return redirect(url_for('index'))
     form = AuthorRegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        newuser = Users(email=form.email.data,username=form.username.data,password=hashed_password)
-        db.session.add(newuser)
+        current_user.bio = form.bio.data
+        current_user.address = form.address.data
+        current_user.phone = form.phone.data
+        current_user.city = form.city.data
+        current_user.facebook = form.facebook.data
+        current_user.instagram = form.instagram.data
+        current_user.youtube = form.twitter.data
         db.session.commit()
 
-        flash('Registered successfully! Login to access your account', 'success')
+        flash('Successfully registered as an author! Login to access your account', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', title = 'Register', form = form)
+    return render_template('author_register.html', title = 'Write for us', form = form)
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
