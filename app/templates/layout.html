@@ -59,9 +59,13 @@
                     <li class="nav-item">
                       <a href="#" class="nav-link">Events</a>
                     </li>
+                    {% if current_user.is_authenticated %}
+                    {% if current_user.post_author == False %}
                     <li class="nav-item">
-                      <a href="#" class="nav-link">Write for Us</a>
+                      <a href="{{ url_for('writer_register') }}" class="nav-link">Write for Us</a>
                     </li>
+                    {% endif %}
+                    {% endif %}
                     <li class="nav-item">
                       <a href="#" class="nav-link">In the Press</a>
                     </li>
@@ -223,7 +227,6 @@
         {% block body %}{% endblock body %}
       </div>
     </div>
-    <div style="width: 100%;background-color: #e6e7e8;">
     <div class="nl-ad" style="background-color: white;">
       <div class="newsletter">
       <form action="action_page.php">
@@ -244,8 +247,8 @@
       <div style="width: 350px;">
         <img src="{{ url_for('static', filename = 'assets/images/jumia_ad.jpg') }}" style="width: 100%;height: auto;">
       </div>
-    </div>
-    </div>
+    </div>       
+    
     <div style="width: 100%;background-color: #e6e7e8;padding: 20px;display: flex;justify-content: center;">
     <img src="{{ url_for('static', filename = 'assets/images/ad1.jpg') }}">
     </div>

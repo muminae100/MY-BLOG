@@ -12,14 +12,9 @@ function openNav() {
     $(this).parent().toggleClass('open');
   });
 
-//  get data from textarea
+  // category_select = document.getElementById('category');
 
-	// $("#new-post-form").submit(function(e){
-	// 	var content = tinymce.get("texteditor").getContent();
-
-	// 	$("#data-preview-container").html(content);
-
-	// 	return false;
-
-	// });
-
+  // category_select.onchange = function() {
+  //   category = category_select.value;
+  //   alert(category)
+  // }

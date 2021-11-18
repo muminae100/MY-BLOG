@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField, TextAreaField,SelectField
 from wtforms.validators import DataRequired,Length,Email,EqualTo,ValidationError
-from app.models import Categories, Users
+from app.models import Categories, Users, Tags
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
@@ -115,11 +115,10 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That email is taken!')
 
-
 class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired(),Length(min=5,max=50)])
     category = SelectField(u'Category', choices=[], validators=[DataRequired()])
-    cover_picture = FileField('Cover image', validators=[FileAllowed(['jpg','png','jpeg','gif'])])
+    cover_picture = StringField('Cover image link', validators=[DataRequired()])
     pic_desc = StringField('Cover image description', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
@@ -140,6 +139,12 @@ class ResetPasswordForm(FlaskForm):
     validators = [DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
 
+
+class SearchForm(FlaskForm):
+    search_input = StringField('Search', validators=[DataRequired()])
+    submit = SubmitField('Send')
+
+
 class ContactForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
     message = TextAreaField('Message', validators=[DataRequired()])
@@ -147,7 +152,7 @@ class ContactForm(FlaskForm):
 
 class CommentsForm(FlaskForm):
     comments = TextAreaField('Comments', validators=[DataRequired()])
-    submit = SubmitField('Send')
+    submit = SubmitField('Post comment')
 
 class SendNotificationsForm(FlaskForm):
     email = StringField('Recipient email', validators=[DataRequired(),Email()])

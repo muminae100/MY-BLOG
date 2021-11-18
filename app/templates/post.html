@@ -34,12 +34,12 @@
               <div class="mt-5 mb-5">
                   <a class="btn btn-info m-1" href="{{ url_for('updatepost',id=article.id) }}">Update post</a>
                   <!-- Button to Open the Modal -->
-              <button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#myModal">
+              <button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#myDeleteModal">
                   Delete post
                 </button>
               
                 <!-- The Modal -->
-                <div class="modal fade" id="myModal">
+                <div class="modal fade" id="myDeleteModal">
                   <div class="modal-dialog">
                     <div class="modal-content">
                     
@@ -62,7 +62,9 @@
               </div>
           {% endif %}
 
-              <div class="d-lg-flex">
+          <!-- will implement tags later -->
+
+              <!-- <div class="d-lg-flex">
                 <span class="fs-16 font-weight-600 mr-2 mb-1"
                   >Tags</span
                 >
@@ -73,52 +75,39 @@
                 >
                 </a>
                 {% endfor %}
-              </div>
+              </div> -->
               
             
               <div class="post-comment-section">
                 <h3 class="font-weight-600">Related Posts</h3>
                 <div class="row">
+                {% for post in posts %}
+                {% if post.id == article.id %}
+                {% else %}
                   <div class="col-sm-6">
                     <div class="post-author">
                       <div class="rotate-img">
+                      <a href="{{ url_for('post',id=post.id) }}">
                         <img
-                          src="{{ url_for('static', filename = 'assets/images/inner/inner_5.jpg') }}"
-                          alt="banner"
+                          src="{{ post.cover_img }}"
                           class="img-fluid"
                         />
+                      </a>
                       </div>
                       <div class="post-author-content">
+                        <a style="text-decoration:none;" href="{{ url_for('post',id=post.id) }}">
                         <h5 class="mb-1">
-                          Virus Kills Member Of Council Advising Iran’s
-                          Supreme Leader
+                          {{ post.title }}
                         </h5>
+                        </a>
                         <p class="fs-13 text-muted mb-0">
-                          <span class="mr-2">Photo </span>10 Minutes ago
+                          <span class="mr-2">Photo </span>{{ post.date_posted.strftime('%d-%m-%Y') }}
                         </p>
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-6">
-                    <div class="post-author">
-                      <div class="rotate-img">
-                        <img
-                          src="{{ url_for('static', filename = 'assets/images/inner/inner_6.jpg') }}"
-                          alt="banner"
-                          class="img-fluid"
-                        />
-                      </div>
-                      <div class="post-author-content">
-                        <h5 class="mb-1">
-                          Virus Kills Member Of Council Advising Iran’s
-                          Supreme Leader
-                        </h5>
-                        <p class="fs-13 text-muted mb-0">
-                          <span class="mr-2">Photo </span>10 Minutes ago
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                {% endif %}
+                {% endfor %}
                 </div>
 
                 <div class="testimonial mt-5">
@@ -173,6 +162,40 @@
 
                 <div class="comment-section">
                   <h5 class="font-weight-600">Comments</h5>
+                  <form class="mt-3" action="" method="POST">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                    <div class="form-group">
+                      <div class="mb-3 mt-3">
+                        <h4>Share article</h4>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+                          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                          <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+                          <script type="IN/Share" data-url=""></script>
+                        </div>                  
+                       
+                      </div>
+                      {% if current_user.is_authenticated %}
+                      {% if form.comments.errors %}
+                      {{ form.comments(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.comments.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                      {% else %}
+                          {{ form.comments(class="form-control form-control-lg") }}
+                      {% endif %}
+                      </div>
+                  </fieldset>
+                  <div class="form-group">
+                      {{ form.submit(class="btn btn-success") }}
+                  </div>
+                  </form>
+                  {% else %}
+                    <p class="text-danger">You must login in order to post your comment.</p>
+                  {% endif %}
                   {% for comment in comments %}
                   <div class="comment-box">
                     <div class="d-flex align-items-center">
@@ -184,7 +207,7 @@
                       </div>
                       <div>
                         <p class="fs-12 mb-1 line-height-xs">
-                         {{ comment.date_written }}
+                         {{ comment.date_written }} 
                         </p>
                         <p
                           class="fs-16 font-weight-600 mb-0 line-height-xs"
@@ -197,292 +220,85 @@
                     <p class="fs-12 mt-3">
                       {{ comment.comment }}
                     </p>
+                    {% if current_user.is_authenticated %}
+                    {% if current_user == comment.writer %}
+                    <span>
+                    <a href="{{ url_for('updatecomment',commentid=comment.id,articleid=article.id) }}">Edit</a>
+                    <a class="text-danger" href="{{ url_for('deletecomment',commentid=comment.id,articleid=article.id) }}">Delete</a>
+                    </span>
+                    {% endif %}
+                    {% endif %}                   
                   </div>
                   {% endfor %}
-                  <!-- <div class="comment-box from">
-                    <div class="d-flex align-items-center">
-                      <div class="rotate-img">
-                        <img
-                          src="{{ url_for('static', filename = 'assets/images/faces/face3.jpg') }}"
-                          alt="banner"
-                          class="img-fluid img-rounded mr-3"
-                        />
-                      </div>
-                      <div>
-                        <p class="fs-12 mb-1 line-height-xs">
-                          24 Jul 2020
-                        </p>
-                        <p
-                          class="fs-16 font-weight-600 mb-0 line-height-xs"
-                        >
-                          Mohsen Salehi
-                        </p>
-                      </div>
-                    </div>
-
-                    <p class="fs-12 mt-3">
-                      Praesent facilisis vulputate venenatis. In
-                      facilisis placerat arcu, in tempor neque aliquet
-                      quis. Integer lacinia in ligula eu sodales. Proin
-                      non lorem iaculis, dictum lorem quis, bibendum
-                      leo.
-                    </p>
-                  </div>
-                  <div class="comment-box mb-0">
-                    <div class="d-flex align-items-center">
-                      <div class="rotate-img">
-                        <img
-                          src="{{ url_for('static', filename = 'assets/images/faces/face3.jpg') }}"
-                          alt="banner"
-                          class="img-fluid img-rounded mr-3"
-                        />
-                      </div>
-                      <div>
-                        <p class="fs-12 mb-1 line-height-xs">
-                          24 Jul 2020
-                        </p>
-                        <p
-                          class="fs-16 font-weight-600 mb-0 line-height-xs"
-                        >
-                          Lucy Miller
-                        </p>
-                      </div>
-                    </div>
-
-                    <p class="fs-12 mt-3">
-                      Praesent facilisis vulputate venenatis. In
-                      facilisis placerat arcu, in tempor neque aliquet
-                      quis. Integer lacinia in ligula eu sodales. Proin
-                      non lorem iaculis, dictum lorem quis, bibendum
-                      leo.
-                    </p>
-                  </div> -->
                 </div>
-
               </div>
             </div>
             <div class="col-lg-4">
               <h2 class="mb-4 text-primary font-weight-600">
                 Latest news
               </h2>
+              {% for post in latest_posts %}
               <div class="row">
                 <div class="col-sm-12">
                   <div class="border-bottom pb-4 pt-4">
                     <div class="row">
                       <div class="col-sm-8">
+                        <a style="text-decoration: none;" href="{{ url_for('post',id=post.id) }}">
                         <h5 class="font-weight-600 mb-1">
-                          Ways to stay social online while in self..
+                          {{ post.title }}
                         </h5>
+                        </a>
                         <p class="fs-13 text-muted mb-0">
-                          <span class="mr-2">Photo </span>10 Minutes ago
+                          <span class="mr-2">Photo </span>{{ post.date_posted }}
                         </p>
                       </div>
                       <div class="col-sm-4">
+                        <a style="text-decoration: none;" href="{{ url_for('post',id=post.id) }}">
                         <div class="rotate-img">
                           <img
-                            src="{{ url_for('static', filename = 'assets/images/inner/inner_7.jpg') }}"
-                            alt="banner"
+                            src="{{ post.cover_img }}"
                             class="img-fluid"
                           />
                         </div>
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="border-bottom pb-4 pt-4">
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <h5 class="font-weight-600 mb-1">
-                          Premier League players join charity..
-                        </h5>
-                        <p class="fs-13 text-muted mb-0">
-                          <span class="mr-2">Photo </span>10 Minutes ago
-                        </p>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="rotate-img">
-                          <img
-                            src="{{ url_for('static', filename = 'assets/images/inner/inner_8.jpg') }}"
-                            alt="banner"
-                            class="img-fluid"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="pt-4">
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <h5 class="font-weight-600 mb-1">
-                          UK Athletics board changed stance on..
-                        </h5>
-                        <p class="fs-13 text-muted mb-0">
-                          <span class="mr-2">Photo </span>10 Minutes ago
-                        </p>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="rotate-img">
-                          <img
-                            src="{{ url_for('static', filename = 'assets/images/inner/inner_9.jpg') }}"
-                            alt="banner"
-                            class="img-fluid"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
               <div class="trending">
                 <h2 class="mb-4 text-primary font-weight-600">
                   Trending
                 </h2>
+                {% for post in trending_posts %}
                 <div class="mb-4">
+                  <a style="text-decoration: none;" href="{{ url_for('post',id=post.id) }}">
                   <div class="rotate-img">
                     <img
-                      src="{{ url_for('static', filename = 'assets/images/inner/inner_10.jpg') }}"
-                      alt="banner"
+                      src="{{ post.cover_img }}"
                       class="img-fluid"
                     />
                   </div>
+                  </a>
+                  <a style="text-decoration: none;" href="{{ url_for('post',id=post.id) }}">
                   <h3 class="mt-3 font-weight-600">
-                    Virus Kills Member Of Advising Iran’s Supreme
+                    {{ post.title }}
                   </h3>
+                  </a>
                   <p class="fs-13 text-muted mb-0">
-                    <span class="mr-2">Photo </span>10 Minutes ago
+                    <span class="mr-2">Photo </span>{{ post.date_posted }}
                   </p>
                 </div>
-                <div class="mb-4">
-                  <div class="rotate-img">
-                    <img
-                      src="{{ url_for('static', filename = 'assets/images/inner/inner_11.jpg') }}"
-                      alt="banner"
-                      class="img-fluid"
-                    />
-                  </div>
-                  <h3 class="mt-3 font-weight-600">
-                    Virus Kills Member Of Advising Iran’s Supreme
-                  </h3>
-                  <p class="fs-13 text-muted mb-0">
-                    <span class="mr-2">Photo </span>10 Minutes ago
-                  </p>
-                </div>
-                <div class="mb-4">
-                  <div class="rotate-img">
-                    <img
-                      src="{{ url_for('static', filename = 'assets/images/inner/inner_12.jpg') }}"
-                      alt="banner"
-                      class="img-fluid"
-                    />
-                  </div>
-                  <h3 class="mt-3 font-weight-600">
-                    Virus Kills Member Of Advising Iran’s Supreme
-                  </h3>
-                  <p class="fs-13 text-muted mb-0">
-                    <span class="mr-2">Photo </span>10 Minutes ago
-                  </p>
-                </div>
+                {% endfor %}
               </div>
-            </div>
+            </div>  
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div style="background-color: white;" class="container mb-5 mt-5 p-5">
-    <a href="{{ url_for('user_posts',username=article.author.username) }}">
-    <img style="border-radius: 50%;width: 30px;height: 30px;" src="{{ url_for('static',filename='imgs/profile_pics/' + article.author.profile_pic )}}">
-    <span>{{ article.author.username }}</span>
-    </a>
-    <p><small class="text-danger">Category: {{ article.category }}</small></p>
-    <h2>{{ article.title }}</h2>
-    <small class="text-muted">Posted by {{ article.author.username }} on {{ article.date_posted.strftime('%Y-%m-%d') }}</small>
-    <div>
-        {{ article.content }}
-    </div>
-    
-    <div class="mb-3 mt-3">
-      <ul style="color: red;">
-      {% for post in posts %}
-        {% if post.category == article.category and post.id != article.id %}
-        <h5 style="margin: 0;">Related articles</h5>
-        <li><a href="{{ url_for('post',id=post.id) }}">{{post.title}}</a></li>
-        {% endif %}
-      {% endfor %}
-      </ul>
-    </div>
-    <div>
-      <h5 style="color: red;">More interesting articles</h5>
-      <ul>
-      {% for post in posts %}
-      <a href="{{ url_for('post',id=post.id) }}"><li>{{post.title}}</li></a>
-      {% endfor %}
-      </ul>
-    </div>
-    <form class="mt-3" action="" method="POST">
-      {{ form.hidden_tag() }}
-      <fieldset class="form-group">
-      <div class="form-group">
-        {{ form.comments.label(class="form-control-label text-danger") }}
-        <div class="mb-3 mt-1">
-          <span>Share</span>
-          <a class="text-dark" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-instagram"></i></a>
-          <a class="text-dark" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-linkedin"></i></a>
-          <a class="text-dark" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;"  class="fa fa-twitter"></i></a>
-          <a class="text-dark" href="#"><i style="border-radius: 50%;padding: 10px;background-color: #f1f1f1;" class="fa fa-facebook"></i></a>
-        </div>
-        <div>
-          <div>
-            <a href=""><span class="material-icons">
-              thumb_up
-            </span></a>
-            <a href=""><span class="material-icons">
-              thumb_down_alt
-            </span></a>
-          </div>
-          {% for comment in comments %}
-            <div>
-              <div>{{ comment.comment }}</div>
-              <div>by {{ comment.writer.username }} </div> 
-              {% if current_user.is_authenticated %}
-              {% if current_user == comment.writer %}
-            <span>
-            <a href="{{ url_for('updatecomment',commentid=comment.id,articleid=article.id) }}">Edit</a>
-            <a href="{{ url_for('deletecomment',commentid=comment.id,articleid=article.id) }}">Delete</a>
-            </span>
-            {% endif %}
-            {% endif %}
-            </div>
-          {% endfor %}
-        </div>
-        {% if current_user.is_authenticated %}
-        {% if form.comments.errors %}
-        {{ form.comments(class="form-control form-control-lg is-invalid") }}
-        <div class="invalid-feedback">
-            {% for error in form.comments.errors %}
-                <span>{{ error }}</span>
-            {% endfor %}
-        </div>
-        {% else %}
-            {{ form.comments(class="form-control form-control-lg") }}
-        {% endif %}
-        </div>
-    </fieldset>
-    <div class="form-group">
-        {{ form.submit(class="btn btn-outline-info") }}
-    </div>
-    </form>
-    {% else %}
-      <p class="text-danger">You must login in order to post your comment.</p>
-    {% endif %}
-</div>
+
 
 {% endblock %}
