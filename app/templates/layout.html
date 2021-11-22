@@ -198,8 +198,8 @@
                 </p>
               </div>
               <div class="d-flex">
-                <span id="date" class="mr-3 text-danger"></span>
-                <span class="text-danger">incomplete</span>
+                <span id="day" class="mr-3 text-danger"></span>
+                <span id="date" class="text-danger"></span>
               </div>
             </div>
           </div>
@@ -406,7 +406,23 @@
     src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js'></script>
   <script type='text/javascript'>
     const d = new Date();
-    document.getElementById("date").innerHTML = d;
+    
+    const weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";    
+    var date = d.getDate();
+    var day = weekday[d.getDay()];
+    var month = d.getMonth() + 1; 
+    var year = d.getFullYear();
+    
+    var dateStr = date + "/" + month + "/" + year;
+    document.getElementById("day").innerHTML = day;
+    document.getElementById("date").innerHTML = dateStr;
   </script>
   <script src="{{ url_for('static', filename='assets/js/scripts.js') }}"></script>
   <!-- End custom js for this page-->
