@@ -267,8 +267,9 @@ def updatepost(id):
 def deletepost(id):
     article = Articles.query.get_or_404(id)
     if current_user.admin != True:
-        if article.author != current_user:
-            abort(403)
+        abort(404)
+    if article.author != current_user:
+        abort(404)
 
     db.session.delete(article)
     db.session.commit()
