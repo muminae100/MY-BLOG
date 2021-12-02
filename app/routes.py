@@ -4,19 +4,34 @@ import secrets
 from PIL import Image
 from flask import render_template,redirect,request,url_for,flash,abort,jsonify
 from app import app,db,bcrypt,mail
-from app.models import Users,Articles,Comments,Categories,Tags
+from app.models import Users,Articles,Articlecomments,Videocomments,Categories,Tags,Videos
 from flask_login import login_user,current_user,logout_user,login_required
 from app.forms import (RegistrationForm,LoginForm,UpdateAccountForm,
 PostForm,RequestResetForm,ResetPasswordForm,ContactForm,CommentsForm,SearchForm,
-SendNotificationsForm,AuthorRegistrationForm,AuthorUpdateAccountForm)
+SendNotificationsForm,AuthorRegistrationForm,AuthorUpdateAccountForm,VideoForm)
 from flask_mail import Message
 
 
 @app.route('/')
 def index():
-    page = request.args.get('page', 1, type=int)
-    articles = Articles.query.order_by(Articles.date_posted.desc()).paginate(per_page=10, page=page)
-    return render_template('index.html',articles = articles)
+    articles = Articles.query.order_by(Articles.date_posted.desc()).limit(5).all()
+    headline = Articles.query.order_by(Articles.date_posted.desc()).first()
+    now = datetime.datetime.now() 
+    time_posted = timeago.format(headline.date_posted, now)
+    latest_news = Articles.query.order_by(Articles.date_posted.desc()).limit(3).all()
+    popular = Articles.query.order_by(Articles.date_posted.desc()).limit(3).all()
+    politics = Articles.query.filter_by(category_id=1).order_by(Articles.date_posted.desc()).limit(5).all()
+    headline_politics = Articles.query.filter_by(category_id=1).order_by(Articles.date_posted.desc()).first()
+    trending_news = Articles.query.order_by(Articles.date_posted.desc()).limit(7).all()
+    categories = Categories.query.all()
+    first_row_videos = Videos.query.order_by(Videos.date_posted.desc()).limit(2).all()
+    second_row_videos = Videos.query.order_by(Videos.date_posted.desc()).offset(2).limit(2).all()
+    third_row_videos = Videos.query.order_by(Videos.date_posted.desc()).offset(4).limit(2).all()
+    latest_videos = Videos.query.order_by(Videos.date_posted.desc()).limit(8).all()
+    return render_template('index.html',articles = articles,latest_news=latest_news,
+    headline=headline,categories=categories,first_row_videos=first_row_videos,third_row_videos=third_row_videos,
+    latest_videos=latest_videos,trending_news=trending_news,second_row_videos=second_row_videos,
+    popular=popular,politics=politics,headline_politics=headline_politics,time_posted=time_posted)
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
@@ -191,6 +206,38 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+# videos
+@app.route('/newvideo', methods = ['GET', 'POST'])
+@login_required
+def new_video():
+    if current_user.post_author == False:
+        abort(404)
+    form =VideoForm()
+    form.category.choices = [(category.id, category.categoryname) for category in Categories.query.all()]
+    if form.validate_on_submit():
+        video = Videos(title=form.title.data,category_id=form.category.data
+        ,vid_author=current_user,video_url=form.video_url.data,video_desc=form.video_desc.data)
+        db.session.add(video)
+        db.session.commit()
+        flash('Your video has been posted successfully!', 'success')
+        return redirect(url_for('video',id=video.id))
+    return render_template('new_video.html', title = 'New video',form=form)
+
+@app.route('/video/<int:id>', methods = ['GET', 'POST'])
+def video(id):
+    video = Videos.query.get_or_404(id)
+    now = datetime.datetime.now() 
+    time_posted = timeago.format(video.date_posted, now)
+
+    form = CommentsForm()
+    if form.validate_on_submit():
+        comment = Videocomments(comment=form.comments.data,user_id=current_user.id,video_id=video.id)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your have successfully added your comment!', 'success')
+        return redirect(url_for('video',id = id))
+    video_url = 'https://www.youtube.com/embed/' + video.video_url
+    return render_template('video.html', title=video.title, video = video,form=form,date_posted=time_posted,video_url=video_url)
 
 # posts
 @app.route('/newpost', methods = ['GET', 'POST'])
@@ -221,13 +268,13 @@ def post(id):
     latest_posts = Articles.query.order_by(Articles.date_posted.desc()).all()
    
     trending_posts = Articles.query.order_by(Articles.date_posted.desc()).all()
-    comments = article.userscomments
+    comments = article.users_comments
     now = datetime.datetime.now() 
     time_posted = timeago.format(article.date_posted, now)
 
     form = CommentsForm()
     if form.validate_on_submit():
-        comment = Comments(comment=form.comments.data,user_id=current_user.id,article_id=article.id)
+        comment = Articlecomments(comment=form.comments.data,user_id=current_user.id,article_id=article.id)
         db.session.add(comment)
         db.session.commit()
         flash('Your have successfully added your comment!', 'success')
@@ -266,7 +313,7 @@ def updatepost(id):
 @login_required
 def deletepost(id):
     article = Articles.query.get_or_404(id)
-    if current_user.admin != True:
+    if current_user.post_author != True:
         abort(404)
     if article.author != current_user:
         abort(404)
@@ -342,6 +389,67 @@ def search():
         search_input = form.search_input.data
         flash('Search results for','info')
     return render_template('pages/search_results.html')
+
+
+@app.route('/post/<articleid>/comment/<int:commentid>/update', methods = ['GET', 'POST'])
+@login_required
+def updatecomment(commentid,articleid):
+    article = Articles.query.get_or_404(int(articleid))
+    comment = Articlecomments.query.get_or_404(int(commentid))
+    if comment.writer != current_user:
+        abort(404)
+
+    form = CommentsForm()
+    if form.validate_on_submit():
+        comment.comment = form.comments.data
+        db.session.commit()
+        flash('Your comment has been updated!', 'success')
+        return redirect(url_for('post',id = article.id))
+    elif request.method == 'GET':
+        form.comments.data = comment.comment
+    return render_template('post.html', title = 'Update comment', form = form,article=article)
+
+@app.route('/post/<int:articleid>/comment/<int:commentid>/delete', methods = ['POST'])
+@login_required
+def deletecomment(articleid,commentid):
+    article = Articles.query.get_or_404(articleid)
+    comment = Articlecomments.query.get_or_404(commentid)
+    if comment.writer != current_user:
+        abort(404)
+
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Your comment has been deleted!', 'success')
+    return redirect(url_for('post',id=article.id))
+
+
+
+@app.route('/terms_and_conditions')
+def terms_conditions():
+    return render_template('Terms_and_conditions.html', title='Terms and conditions')
+
+@app.route('/privacy_policy')
+def privacy_policy():
+    return render_template('privacy_policy.html', title='Privacy policy')
+
+@app.route('/about')
+def about():
+    return render_template('pages/aboutus.html')
+
+@app.route('/tag/<int:tagid>')
+def tags(tagid):
+    tag = Tags.query.get_or_404(tagid)
+    articles = tag.articles
+    return render_template('pages/tags.html',articles = articles,heading=tag.tagname)
+
+
+
+
+
+
+
+
+# Admin routes
 @app.route('/admin')
 @login_required
 def admin():
@@ -377,12 +485,11 @@ def comments():
     comments = Comments.query.all()
     return render_template('admin/comments.html', comments = comments)
 
-# admin comment deleting
 @app.route('/delete_comment/<int:commentid>')
 @login_required
-def delete_comment(commentid):
+def admin_delete_comment(commentid):
     message = 'Your comment was deleted because of:'
-    comment = Comments.query.get_or_404(str(commentid))
+    comment = Comments.query.get_or_404(int(commentid))
     user = comment.writer
     db.session.delete(comment)
     db.session.commit()
@@ -390,36 +497,28 @@ def delete_comment(commentid):
     send_user_email(user,message)
     return redirect(url_for('comments'))
 
-@app.route('/post/<articleid>/comment/<int:commentid>/update', methods = ['GET', 'POST'])
+@app.route('/all_admins')
 @login_required
-def updatecomment(commentid,articleid):
-    article = Articles.query.get_or_404(str(articleid))
-    comment = Comments.query.get_or_404(str(commentid))
-    if comment.writer != current_user:
-        abort(403)
+def all_admins():
+    admins = Users.query.filter_by(admin=True).paginate()
+    for admin in admins.items:
+        image_file = url_for('static', filename = 'imgs/profile_pics/' + admin.profile_pic)
+    return render_template('admin/all_admins.html', admins = admins, image_file = image_file, title='Site admins')
 
-    form = CommentsForm()
+@app.route('/settings')
+@login_required
+def settings():
+    return render_template('admin/settings.html')
+
+@app.route('/notifications', methods=['GET','POST'])
+@login_required
+def notifications():
+    form = SendNotificationsForm()
     if form.validate_on_submit():
-        comment.comment = form.comments.data
-        db.session.commit()
-        flash('Your comment has been updated!', 'success')
-        return redirect(url_for('post',id = article.id))
-    elif request.method == 'GET':
-        form.comments.data = comment.comment
-    return render_template('post.html', title = 'Update comment', form = form,article=article)
-
-@app.route('/post/<int:articleid>/comment/<int:commentid>/delete')
-@login_required
-def deletecomment(articleid,commentid):
-    articleid = Articles.query.get_or_404(str(articleid))
-    comment = Comments.query.get_or_404(str(commentid))
-    if comment.writer != current_user:
-        abort(403)
-
-    db.session.delete(comment)
-    db.session.commit()
-    flash('Your comment has been deleted!', 'success')
-    return redirect(url_for('post',id=articleid))
+        user = Users.query.filter_by(email=form.email.data).first()
+        send_user_email(user,form.notification.data)
+        flash('Notification sent successfully','success')
+    return render_template('admin/notifications.html',form=form)
 
 
 @app.route('/all_users')
@@ -456,44 +555,3 @@ def send_user_email(id,message):
     flash('User does not exist!')
     return render_template('admin/users.html')
 
-@app.route('/all_admins')
-@login_required
-def all_admins():
-    admins = Users.query.filter_by(admin=True).paginate()
-    for admin in admins.items:
-        image_file = url_for('static', filename = 'imgs/profile_pics/' + admin.profile_pic)
-    return render_template('admin/all_admins.html', admins = admins, image_file = image_file, title='Site admins')
-
-@app.route('/settings')
-@login_required
-def settings():
-    return render_template('admin/settings.html')
-
-@app.route('/notifications', methods=['GET','POST'])
-@login_required
-def notifications():
-    form = SendNotificationsForm()
-    if form.validate_on_submit():
-        user = Users.query.filter_by(email=form.email.data).first()
-        send_user_email(user,form.notification.data)
-        flash('Notification sent successfully','success')
-    return render_template('admin/notifications.html',form=form)
-
-
-@app.route('/terms_and_conditions')
-def terms_conditions():
-    return render_template('Terms_and_conditions.html', title='Terms and conditions')
-
-@app.route('/privacy_policy')
-def privacy_policy():
-    return render_template('privacy_policy.html', title='Privacy policy')
-
-@app.route('/about')
-def about():
-    return render_template('pages/aboutus.html')
-
-@app.route('/tag/<int:tagid>')
-def tags(tagid):
-    tag = Tags.query.get_or_404(tagid)
-    articles = tag.articles
-    return render_template('pages/tags.html',articles = articles,heading=tag.tagname)

@@ -4,7 +4,7 @@
     <form name="new-post-form" action="" method="POST">
         {{ form.hidden_tag() }}
             <fieldset class="form-group">
-               <legend class="border-bottom md-4">New article</legend>
+               <legend class="border-bottom md-4">Post new video</legend>
                <div class="form-group">
                     {{ form.title.label(class="form-control-label") }}
                     {% if form.title.errors %}
@@ -31,44 +31,33 @@
                         {{ form.category(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-               
                 <div class="form-group">
-                    {{ form.cover_picture.label() }}
-                    {{ form.cover_picture(class="form-control-file") }}
-                    {% if form.cover_picture.errors %}
-                    {% for error in form.cover_picture.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                    <br>
-                    {% endfor %}
+                    {{ form.video_url.label(class="form-control-label") }}
+                    {% if form.video_url.errors %}
+                    {{ form.video_url(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.video_url.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        {{ form.video_url(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.pic_desc.label(class="form-control-label") }}
-                    {% if form.pic_desc.errors %}
-                    {{ form.pic_desc(class="form-control form-control-lg is-invalid") }}
+                    {{ form.video_desc.label(class="form-control-label") }}
+                    {% if form.video_desc.errors %}
+                    {{ form.video_desc(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
                         {% for error in form.title.errors %}
                         <span>{{ error }}</span>
                         {% endfor %}
                     </div>
                     {% else %}
-                    {{ form.pic_desc(class="form-control form-control-lg") }}
+                    {{ form.video_desc(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
               
-                <div class="form-group">
-                    {{ form.content.label(class="form-control-label") }}
-                    {% if form.content.errors %}
-                    {{ form.content(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.content.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                        {{ form.content(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-success") }}

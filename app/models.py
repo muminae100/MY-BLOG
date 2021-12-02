@@ -16,7 +16,9 @@ class Users(db.Model, UserMixin):
     bio = db.Column(db.String(500))
     admin = db.Column(db.Boolean, nullable = False, default = False)
     posts = db.relationship('Articles', backref = 'author', lazy = True)
-    the_comments = db.relationship('Comments', backref='writer',lazy=True)
+    videos = db.relationship('Videos', backref = 'vid_author', lazy = True)
+    article_comments = db.relationship('Articlecomments', backref='writer',lazy=True)
+    video_comments = db.relationship('Videocomments', backref='its_writer',lazy=True)
     post_author = db.Column(db.Boolean, nullable=False, default=False)
     address = db.Column(db.String(50))
     phone_number = db.Column(db.String(50))
@@ -59,15 +61,30 @@ class Articles(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
     cover_img = db.Column(db.String(100), nullable = False)
     pic_desc = db.Column(db.String(100), nullable = False)
-    userscomments = db.relationship('Comments', backref = 'its_article', lazy = True)
+    users_comments = db.relationship('Articlecomments', backref = 'its_article', lazy = True)
 
     def __repr__(self):
         return f"Article('{self.id}','{self.title}','{self.date_posted}')"
+
+
+class Videos(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(100), nullable = False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable = False)
+    video_url = db.Column(db.Text, nullable = False)
+    date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow) 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
+    video_desc = db.Column(db.String(100), nullable = False)
+    userscomments = db.relationship('Videocomments', backref = 'its_video', lazy = True)
+
+    def __repr__(self):
+        return f"Videos('{self.id}','{self.title}','{self.date_posted}')"
 
 class Categories(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     categoryname = db.Column(db.String(200), nullable = False,unique=True)
     articles = db.relationship('Articles', backref = 'category', lazy = True)
+    videos = db.relationship('Videos', backref = 'category', lazy = True)
     tags = db.relationship('Tags', backref = 'its_category', lazy = True)
     def __repr__(self):
         return f"Categories('{self.id}','{self.categoryname}')"
@@ -83,12 +100,26 @@ class Tags(db.Model):
 
 
 
-class Comments(db.Model):
+class Articlecomments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text, nullable=False)
     date_written = db.Column(db.DateTime, nullable = False, default = datetime.utcnow) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
-    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'), nullable = False)
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
 
     def __repr__(self):
         return f"Comment('{self.id}','{self.comment}')"
+
+class Videocomments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.Text, nullable=False)
+    date_written = db.Column(db.DateTime, nullable = False, default = datetime.utcnow) 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
+    video_id = db.Column(db.Integer, db.ForeignKey('videos.id'))
+
+    def __repr__(self):
+        return f"Comment('{self.id}','{self.comment}')"
+
+class Subscribers(db.Model):
+    id = db.Column(db.Integer,primary_key = True)
+    email = db.Column(db.String(120), unique =True, nullable = False)

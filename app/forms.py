@@ -109,11 +109,18 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That email is taken!')
 
 class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired(),Length(min=5,max=50)])
+    title = StringField('Title', validators=[DataRequired(),Length(min=5,max=150)])
     category = SelectField(u'Category', choices=[], validators=[DataRequired()])
     cover_picture = StringField('Cover image link', validators=[DataRequired()])
     pic_desc = StringField('Cover image description', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Post')
+
+class VideoForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired(),Length(min=25,max=100)])
+    category = SelectField(u'Category', choices=[], validators=[DataRequired()])
+    video_url = StringField('Youtube video id (e.g Us1Gh_1j3zb)', validators=[DataRequired()])
+    video_desc = StringField('Video description', validators=[DataRequired()])
     submit = SubmitField('Post')
 
 
@@ -144,7 +151,7 @@ class ContactForm(FlaskForm):
     submit = SubmitField('Send')
 
 class CommentsForm(FlaskForm):
-    comments = TextAreaField('Comments', validators=[DataRequired()])
+    comments = StringField('Comments', validators=[DataRequired()])
     submit = SubmitField('Post comment')
 
 class SendNotificationsForm(FlaskForm):
