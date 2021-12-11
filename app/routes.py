@@ -20,9 +20,9 @@ def index():
     time_posted = timeago.format(headline.date_posted, now)
     latest_news = Articles.query.order_by(Articles.date_posted.desc()).limit(3).all()
     popular = Articles.query.order_by(Articles.date_posted.desc()).limit(3).all()
-    politics = Articles.query.filter_by(category_id=1).order_by(Articles.date_posted.desc()).limit(5).all()
-    headline_politics = Articles.query.filter_by(category_id=1).order_by(Articles.date_posted.desc()).first()
-    trending_news = Articles.query.order_by(Articles.date_posted.desc()).limit(7).all()
+    random_articles = Articles.query.filter_by(category_id=1).order_by(Articles.date_posted.desc()).limit(5).all()
+    headline_random = Articles.query.filter_by(category_id=1).order_by(Articles.date_posted.desc()).first()
+    trending_news = Articles.query.order_by(Articles.date_posted.desc()).limit(5).all()
     categories = Categories.query.all()
     first_row_videos = Videos.query.order_by(Videos.date_posted.desc()).limit(2).all()
     second_row_videos = Videos.query.order_by(Videos.date_posted.desc()).offset(2).limit(2).all()
@@ -31,7 +31,7 @@ def index():
     return render_template('index.html',articles = articles,latest_news=latest_news,
     headline=headline,categories=categories,first_row_videos=first_row_videos,third_row_videos=third_row_videos,
     latest_videos=latest_videos,trending_news=trending_news,second_row_videos=second_row_videos,
-    popular=popular,politics=politics,headline_politics=headline_politics,time_posted=time_posted)
+    popular=popular,random_articles=random_articles,headline_random=headline_random,time_posted=time_posted)
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
