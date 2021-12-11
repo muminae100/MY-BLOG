@@ -186,7 +186,20 @@
                     {{ form.hidden_tag() }}
                     <fieldset class="form-group">
                     <div class="form-group">
-                      {% if current_user.is_authenticated %}
+                        {{ form.email.label(class="form-control-label") }}
+                        {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.email(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                      {{ form.comments.label(class="form-control-label") }}
                       {% if form.comments.errors %}
                       {{ form.comments(class="form-control form-control-lg is-invalid") }}
                       <div class="invalid-feedback">
@@ -203,9 +216,7 @@
                       {{ form.submit(class="btn btn-success") }}
                   </div>
                   </form>
-                  {% else %}
-                    <p class="text-danger">You must login to post your comment.</p>
-                  {% endif %}
+                 
                   {% for comment in comments %}
                   <div class="comment-box">
                     <div class="d-flex align-items-center">

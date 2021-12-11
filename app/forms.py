@@ -156,8 +156,14 @@ class ContactForm(FlaskForm):
     submit = SubmitField('Send')
 
 class CommentsForm(FlaskForm):
-    comments = StringField('Comments', validators=[DataRequired()])
+    email = StringField('Your email', validators=[DataRequired(),Email()])
+    comments = StringField('Comment', validators=[DataRequired()])
     submit = SubmitField('Post comment')
+    
+    def validate_email(self,email):
+        user = Users.query.filter_by(email = email.data).first()
+        if user is None:
+            raise ValidationError('You must login to write a comment!')
 
 class SendNotificationsForm(FlaskForm):
     email = StringField('Recipient email', validators=[DataRequired(),Email()])
