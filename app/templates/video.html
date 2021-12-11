@@ -47,23 +47,7 @@
 
                 </div>
               </div>
-          {% endif %}
-
-          <!-- will implement tags later -->
-
-              <!-- <div class="d-lg-flex">
-                <span class="fs-16 font-weight-600 mr-2 mb-1"
-                  >Tags</span
-                >
-                {% for tag in tags %}
-                <a href="{{ url_for('tags',tagid=tag.id) }}">
-                <span class="badge badge-outline-dark mr-2 mb-1"
-                  >{{ tag.tagname }}</span
-                >
-                </a>
-                {% endfor %}
-              </div> -->
-              
+              {% endif %}
             
               <div class="post-comment-section">
                 <h3 class="font-weight-600">Related videos</h3>
@@ -164,7 +148,20 @@
                     {{ form.hidden_tag() }}
                     <fieldset class="form-group">
                     <div class="form-group">
-                      {% if current_user.is_authenticated %}
+                        {{ form.email.label(class="form-control-label") }}
+                        {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.email(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                      {{ form.comments.label(class="form-control-label") }}
                       {% if form.comments.errors %}
                       {{ form.comments(class="form-control form-control-lg is-invalid") }}
                       <div class="invalid-feedback">
@@ -181,9 +178,6 @@
                       {{ form.submit(class="btn btn-success") }}
                   </div>
                   </form>
-                  {% else %}
-                    <p class="text-danger">You must login to post your comment.</p>
-                  {% endif %}
                   {% for comment in comments %}
                   <div class="comment-box">
                     <div class="d-flex align-items-center">
@@ -225,7 +219,7 @@
             </div>
             <div class="col-lg-4">
               <h2 class="mb-4 text-primary font-weight-600">
-                Latest news
+                Latest videos
               </h2>
               {% for v in latest_vid %}
               <div class="row">
@@ -259,7 +253,7 @@
               {% endfor %}
               <div class="trending">
                 <h2 class="mb-4 text-primary font-weight-600">
-                  Trending
+                  Trending videos
                 </h2>
                 {% for vd in trending_vid %}
                 <div class="mb-4">
