@@ -29,6 +29,7 @@
               <div class="post-content">
                 {{ article.content | safe }}
               </div>
+              {% if article.author == current_user %}
               <div style="background-color: #9c8f8f1a;" class="p-5 mt-3 mb-3">
                 <h3>Choose tags for this article</h3>
                 {% for t in all_tags %}
@@ -45,6 +46,7 @@
                 {% endif %}
                 {% endfor %}
               </div>
+              {% endif %}
 
               {% if article.author == current_user %}
               <div class="mt-5 mb-5">
