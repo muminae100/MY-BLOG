@@ -52,41 +52,41 @@
     </p>
   </div>
 </div>
-  <h3 class="m-3">Posts by {{ user.username }}({{ articles.total }})</h1>
+  <h3 class="m-3">Videos by {{ user.username }}({{ videos.total }})</h1>
 
     <div class="row" data-aos="fade-up">
         <div class="col-lg-9 stretch-card grid-margin">
           <div class="card">
             <div class="card-body">
-              {% for article in articles.items %}
+              {% for video in videos.items %}
               <div class="row">
                 <div class="col-sm-4 grid-margin">
                   <div class="position-relative">
                     <div class="rotate-img">
-                      <a style="text-decoration: none;" href="{{ url_for('post', id = article.id) }}">
+                      <a style="text-decoration: none;" href="{{ url_for('video', id = video.id) }}">
                       <img
-                        src="{{ article.cover_img }}"
+                        src="https://www.youtube.com/embed/{{ video.video_url }}"
                         class="img-fluid"
                       />
                       </a>
                     </div>
                     <div class="badge-positioned">
                       <span class="badge badge-danger font-weight-bold"
-                        >{{ article.category.categoryname }}</span
+                        >{{ video.category.categoryname }}</span
                       >
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-8  grid-margin">
-                  <a style="text-decoration: none;" href="{{ url_for('post', id = article.id) }}">
+                  <a style="text-decoration: none;" href="{{ url_for('video', id = video.id) }}">
                   <h2 class="mb-2 font-weight-600">
-                    {{ article.title }}
+                    {{ video.title }}
                   </h2>
                   </a>
                   <div class="fs-13 mb-2">
-                    <span class="mr-2">Photo </span>Posted on {{ article.date_posted.strftime('%Y-%m-%d') }}
+                    <span class="mr-2">Video </span>Posted on {{ video.date_posted.strftime('%Y-%m-%d') }}
                   </div>
-                  <a style="text-decoration: none;" href="{{ url_for('post', id = article.id) }}">
+                  <a style="text-decoration: none;" href="{{ url_for('video', id = video.id) }}">
                   <p class="mb-0">
                     Read more...
                   </p>
@@ -99,13 +99,13 @@
         </div>
       </div>
     <div class="ml-3">
-    {% for page_num in articles.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+    {% for page_num in videos.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
     {% if page_num %}
-    {% if articles.page == page_num %}
-    <a class="btn btn-info mb-4" href="{{url_for('author_posts',username=user.username, page = page_num)}}">{{ page_num
+    {% if videos.page == page_num %}
+    <a class="btn btn-info mb-4" href="{{url_for('author_videos',username=user.username, page = page_num)}}">{{ page_num
         }}</a>
     {% else %}
-    <a class="btn btn-outline-info mb-4" href="{{url_for('author_posts',username=user.username, page = page_num)}}">{{
+    <a class="btn btn-outline-info mb-4" href="{{url_for('author_videos',username=user.username, page = page_num)}}">{{
         page_num }}</a>
     {% endif %}
     {% else %}

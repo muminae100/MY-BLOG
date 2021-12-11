@@ -29,6 +29,22 @@
               <div class="post-content">
                 {{ article.content | safe }}
               </div>
+              <div style="background-color: #9c8f8f1a;" class="p-5 mt-3 mb-3">
+                <h3>Choose tags for this article</h3>
+                {% for t in all_tags %}
+                {% if t is in tags %}
+                <form class="m-3" action="{{ url_for('remove_tags',id=article.id,tagid=t.id) }}" method="POST">
+                  {{ t.tagname }}
+                  <button class="btn btn-outline-danger ml-3" type="submit">Remove tag</button>
+                </form>
+                {% else %}
+                <form class="m-3" action="{{ url_for('add_tags',id=article.id,tagid=t.id) }}" method="POST">
+                  {{ t.tagname }}
+                  <button class="btn btn-outline-info ml-3" type="submit">Add tag</button>
+                </form>
+                {% endif %}
+                {% endfor %}
+              </div>
 
               {% if article.author == current_user %}
               <div class="mt-5 mb-5">
@@ -44,18 +60,16 @@
                     <span class="deletePost-close">&times;</span>
                     Are you sure you want to delete this post?
                     <form action="{{ url_for('deletepost', id = article.id) }}" method="POST">
-                      <input style="background-color: #f2f2f2;color: red;border: 1px solid red;" 
+                      <input class="btn btn-danger mt-3"
                       type="submit" value="Delete">
                     </form>
                   </div>
 
                 </div>
               </div>
-          {% endif %}
+             {% endif %}
 
-          <!-- will implement tags later -->
-
-              <!-- <div class="d-lg-flex">
+              <div class="d-lg-flex">
                 <span class="fs-16 font-weight-600 mr-2 mb-1"
                   >Tags</span
                 >
@@ -66,7 +80,7 @@
                 >
                 </a>
                 {% endfor %}
-              </div> -->
+                </div>
               
             
               <div class="post-comment-section">
@@ -75,6 +89,8 @@
                 {% for post in posts %}
                 {% if post.id == article.id %}
                 {% else %}
+                {% for tag in post.its_tags %}
+                {% if tag is in tags %}
                   <div class="col-sm-6">
                     <div class="post-author">
                       <div class="rotate-img">
@@ -96,7 +112,9 @@
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </div>  
+                {% endif %}
+                {% endfor %}
                 {% endif %}
                 {% endfor %}
                 </div>
@@ -107,20 +125,24 @@
                   >
                     <div class="d-flex align-items-center mb-3">
                       <div class="rotate-img">
+                        <a style="text-decoration: none;" href="{{ url_for('author_posts',username = article.author.username ) }}">
                         <img style="width: 40px;height: 40px;"
                           src="{{ url_for('static', filename = 'imgs/profile_pics/' + article.author.profile_pic) }}"
                           class="img-fluid img-rounded mr-3"
                         />
+                      </a>
                       </div>
                       <div>
                         <p class="fs-12 mb-1 line-height-xs">
                          Author
                         </p>
+                        <a style="text-decoration: none;" href="{{ url_for('author_posts',username = article.author.username ) }}">
                         <p
                           class="fs-16 font-weight-600 mb-0 line-height-xs"
                         >
                         {{ article.author.username }}
                         </p>
+                        </a>
                       </div>
                     </div>
                     <ul class="social-media mb-3">

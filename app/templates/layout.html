@@ -51,10 +51,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <ul class="navbar-top-left-menu">
                     <li class="nav-item">
-                      <a href="#" class="nav-link">Advertise</a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="{{ url_for('about') }}" class="nav-link">About</a>
+                      <a href="#" class="nav-link">Advertise with us</a>
                     </li>
                     <li class="nav-item">
                       <a href="#" class="nav-link">Events</a>
@@ -81,8 +78,8 @@
 
                           <!-- Overlay content -->
                           <div class="overlay-content">
-                            <form action="/search">
-                              <input type="text" placeholder="Search for articles...">
+                            <form action="{{ url_for('search') }}" method="GET">
+                              <input name="search_string" type="text" placeholder="Search for articles...">
                               <button type="submit"><i style="color: #818181;" class="fas fa-search"></i></button>
                             </form>
                           </div>
@@ -101,7 +98,7 @@
                         height: 40px;
                         border-radius: 50%;
                         background-image: url('../static/imgs/profile_pics/{{ current_user.profile_pic }}');
-                        background-repeat: no-repeat;
+                        background-position: center;
                         background-size: cover;">
                         </div>
                       </a>
@@ -120,7 +117,7 @@
               <div class="navbar-bottom">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="{{ url_for('index') }}">
                       <img src="{{ url_for('static', filename = 'assets/images/logo.svg') }}" />
                     </a>
                   </div>
@@ -140,25 +137,25 @@
                           <a class="nav-link" href="{{ url_for('index') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('categories', category_id=1) }}">MAGAZINE</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('categories', category_id=1) }}">Business</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('categories', category_id=1) }}">Sports</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('categories', category_id=1) }}">Art</a>
-                        </li>
-                        <li class="nav-item">
                           <a class="nav-link" href="{{ url_for('categories', category_id=1) }}">POLITICS</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('categories', category_id=1) }}">Travel</a>
+                          <a class="nav-link" href="{{ url_for('categories', category_id=6) }}">Business</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('categories', category_id=1) }}">Contact</a>
+                          <a class="nav-link" href="{{ url_for('categories', category_id=3) }}">Sports</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{{ url_for('categories', category_id=2) }}">Music</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{{ url_for('categories', category_id=7) }}">Science & Tech</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{{ url_for('categories', category_id=5) }}">Travel</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
                         </li>
                       </ul>
                     </div>
@@ -191,7 +188,7 @@
           <div class="container">
             <div class="d-lg-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center">
-                <span class="badge badge-dark mr-3">Flash news</span>
+                <span class="badge badge-dark mr-3">Corona</span>
                 <p class="mb-0">
                   Lorem Ipsum has been the industry's standard dummy text ever
                   since the 1500s.
@@ -235,7 +232,7 @@
             <div class="col-sm-5">
               <img src="{{ url_for('static', filename = 'assets/images/logo.svg') }}" class="footer-logo" alt="" />
               <h5 class="font-weight-normal mt-4 mb-5">
-                Newspaper is your news, entertainment, music fashion website. We
+                WorldTimes is your news, entertainment, music fashion website. We
                 provide you with the latest breaking news and videos straight from
                 the entertainment industry.
               </h5>
@@ -258,92 +255,55 @@
               </ul>
             </div>
             <div class="col-sm-4">
-              <h3 class="font-weight-bold mb-3">RECENT POSTS</h3>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="footer-border-bottom pb-2">
-                    <div class="row">
-                      <div class="col-3">
-                        <img src="{{ url_for('static', filename = '') }}assets/images/dashboard/home_1.jpg" alt="thumb"
-                          class="img-fluid" />
-                      </div>
-                      <div class="col-9">
-                        <h5 class="font-weight-600">
-                          Cotton import from USA to soar was American traders
-                          predict
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
+              <h3 class="font-weight-bold mb-3">CATEGORIES</h3>
+              <div class="footer-border-bottom pb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <a style="color: white;text-decoration: none;" href="{{ url_for('categories',category_id=1) }}">
+                  <h5 class="mb-0 font-weight-600">Politics</h5>
+                </a>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="footer-border-bottom pb-2 pt-2">
-                    <div class="row">
-                      <div class="col-3">
-                        <img src="{{ url_for('static', filename = 'assets/images/dashboard/home_2.jpg') }}" alt="thumb"
-                          class="img-fluid" />
-                      </div>
-                      <div class="col-9">
-                        <h5 class="font-weight-600">
-                          Cotton import from USA to soar was American traders
-                          predict
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
+              <div class="footer-border-bottom pb-2 pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <a style="color: white;text-decoration: none;" href="{{ url_for('categories',category_id=6) }}">
+                  <h5 class="mb-0 font-weight-600">Business</h5>
+                </a>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div>
-                    <div class="row">
-                      <div class="col-3">
-                        <img src="{{ url_for('static', filename = 'assets/images/dashboard/home_3.jpg') }}" alt="thumb"
-                          class="img-fluid" />
-                      </div>
-                      <div class="col-9">
-                        <h5 class="font-weight-600 mb-3">
-                          Cotton import from USA to soar was American traders
-                          predict
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
+              <div class="footer-border-bottom pb-2 pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <a style="color: white;text-decoration: none;" href="{{ url_for('categories',category_id=3) }}">
+                  <h5 class="mb-0 font-weight-600">Sports</h5>
+                </a>
+                </div>
+              </div>
+              <div class="footer-border-bottom pb-2 pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <a style="color: white;text-decoration: none;" href="{{ url_for('categories',category_id=2) }}">
+                  <h5 class="mb-0 font-weight-600">Music</h5>
+                  </a>
+                </div>
+              </div>
+              <div class="footer-border-bottom pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <a style="color: white;text-decoration: none;" href="{{ url_for('categories',category_id=7) }}">
+                  <h5 class="mb-0 font-weight-600">Science & Tech</h5>
+                  </a>
                 </div>
               </div>
             </div>
             <div class="col-sm-3">
-              <h3 class="font-weight-bold mb-3">CATEGORIES</h3>
-              <div class="footer-border-bottom pb-2">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0 font-weight-600">Magazine</h5>
-                  <div class="count">1</div>
-                </div>
-              </div>
-              <div class="footer-border-bottom pb-2 pt-2">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0 font-weight-600">Business</h5>
-                  <div class="count">1</div>
-                </div>
-              </div>
-              <div class="footer-border-bottom pb-2 pt-2">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0 font-weight-600">Sports</h5>
-                  <div class="count">1</div>
-                </div>
-              </div>
-              <div class="footer-border-bottom pb-2 pt-2">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0 font-weight-600">Arts</h5>
-                  <div class="count">1</div>
-                </div>
-              </div>
-              <div class="pt-2">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0 font-weight-600">Politics</h5>
-                  <div class="count">1</div>
+              <h3 class="font-weight-bold mb-3 mt-1">GET OUR NEWSLETTER</h3>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="footer-border-bottom pb-2">
+                    <div class="row">
+                        <p class="ml-3">Subscribe to our newsletter and stay updated on the latest developments and special offers!</p>
+                        <div class="mt-3 mb-2 ml-3">
+                            <a class="btn btn-success" href="{{ url_for('subscribe') }}">Subscribe</a>
+                        </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -356,7 +316,11 @@
             <div class="col-sm-12">
               <div class="d-sm-flex justify-content-between align-items-center">
                 <div class="fs-14 font-weight-600">
-                  © 2020 Kenya Today. All rights reserved.
+                  <div class="mb-3">
+                    <a style="color: white;text-decoration: none;" href="{{ url_for('terms_conditions') }}">Terms & conditions</a><br>
+                    <a style="color: white;text-decoration: none;" href="{{ url_for('privacy_policy') }}">Privacy policy</a>
+                  </div>
+                  © <span id="copyright-year"></span> WorldTimes. All rights reserved.
                 </div>
 
               </div>
@@ -398,6 +362,7 @@
     var dateStr = date + "/" + month + "/" + year;
     document.getElementById("day").innerHTML = day;
     document.getElementById("date").innerHTML = dateStr;
+    document.getElementById('copyright-year').innerHTML = year;
   </script>
   <script src="{{ url_for('static', filename='assets/js/scripts.js') }}"></script>
   <!-- End custom js for this page-->

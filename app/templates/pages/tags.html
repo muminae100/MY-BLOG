@@ -8,295 +8,126 @@
                   <div class="row">
                     <div class="col-sm-12">
                       <h1 class="font-weight-600 mb-4">
-                        {{ heading }}
-                        {{ articles }}
+                        {{ tag.tagname }}
                       </h1>
                     </div>
                   </div>
+                  {% if articles.total == 0 %}
+                      <div style="background-color: #9c8f8f1a;" class="p-5">
+                          <p>No records found under this tag!</p>
+                      </div>
+                  {% else %}
                   <div class="row">
                     <div class="col-lg-8">
+                      {% for article in articles.items %}
+                      {% if article in tag_articles %}
                       <div class="row">
                         <div class="col-sm-4 grid-margin">
                           <div class="rotate-img">
+                            <a style="text-decoration: none;" href="{{ url_for('post',id=article.id) }}">
                             <img
-                              src="../assets/images/business/business_7.png"
-                              alt="banner"
+                              src="{{ article.cover_img }}"
                               class="img-fluid"
                             />
+                          </a>
                           </div>
                         </div>
                         <div class="col-sm-8 grid-margin">
+                          <a style="text-decoration: none;" href="{{ url_for('post',id=article.id) }}">
                           <h2 class="font-weight-600 mb-2">
-                            No charges over 2017 battle bus cases
+                            {{ article.title }}
                           </h2>
+                          </a>
                           <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
+                            <span class="mr-2">Photo </span>{{ article.date_posted.strftime('%d-%m-%Y') }}
                           </p>
+                          <a style="text-decoration: none;" href="{{ url_for('post',id=article.id) }}">
                           <p class="fs-15">
-                            Lorem Ipsum has been the industry's standard dummy
-                            text ever since the 1500s, when an unknown printer
-                            took a galley of type and scrambled it to make a
-                            type specimen book.
+                            Read more...
                           </p>
+                          </a>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-sm-4 grid-margin">
-                          <div class="rotate-img">
-                            <img
-                              src="../assets/images/business/business_8.png"
-                              alt="banner"
-                              class="img-fluid"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-8 grid-margin">
-                          <h2 class="font-weight-600 mb-2">
-                            No charges over 2017 battle bus cases
-                          </h2>
-                          <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                          <p class="fs-15">
-                            Lorem Ipsum has been the industry's standard dummy
-                            text ever since the 1500s, when an unknown printer
-                            took a galley of type and scrambled it to make a
-                            type specimen book.
-                          </p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-4 grid-margin">
-                          <div class="rotate-img">
-                            <img
-                              src="../assets/images/business/business_9.png"
-                              alt="banner"
-                              class="img-fluid"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-8 grid-margin">
-                          <h2 class="font-weight-600 mb-2">
-                            Kaine: Trump Jr. may have committed treason
-                          </h2>
-                          <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                          <p class="fs-15">
-                            Lorem Ipsum has been the industry's standard dummy
-                            text ever since the 1500s, when an unknown printer
-                            took a galley of type and scrambled it to make a
-                            type specimen book.
-                          </p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-4 grid-margin">
-                          <div class="rotate-img">
-                            <img
-                              src="../assets/images/business/business_10.png"
-                              alt="banner"
-                              class="img-fluid"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-8 grid-margin">
-                          <h2 class="font-weight-600 mb-2">
-                            South Korea’s Moon Jae-in sworn in vowing to address
-                          </h2>
-                          <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                          <p class="fs-15">
-                            Lorem Ipsum has been the industry's standard dummy
-                            text ever since the 1500s, when an unknown printer
-                            took a galley of type and scrambled it to make a
-                            type specimen book.
-                          </p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-4 grid-margin">
-                          <div class="rotate-img">
-                            <img
-                              src="../assets/images/business/business_11.png"
-                              alt="banner"
-                              class="img-fluid"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-8 grid-margin">
-                          <h2 class="font-weight-600 mb-2">
-                            No charges over 2017 battle bus cases
-                          </h2>
-                          <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                          <p class="fs-15">
-                            Lorem Ipsum has been the industry's standard dummy
-                            text ever since the 1500s, when an unknown printer
-                            took a galley of type and scrambled it to make a
-                            type specimen book.
-                          </p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-4 grid-margin">
-                          <div class="rotate-img">
-                            <img
-                              src="../assets/images/business/business_12.png"
-                              alt="banner"
-                              class="img-fluid"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-8 grid-margin">
-                          <h2 class="font-weight-600 mb-2">
-                            Kaine: Trump Jr. may have committed treason
-                          </h2>
-                          <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                          <p class="fs-15">
-                            Lorem Ipsum has been the industry's standard dummy
-                            text ever since the 1500s, when an unknown printer
-                            took a galley of type and scrambled it to make a
-                            type specimen book.
-                          </p>
-                        </div>
-                      </div>
+                      {% endif %}
+                      {% endfor %}
+                      {% for page_num in articles.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+                      {% if page_num %}
+                          {% if articles.page == page_num %}
+                              <a class="btn btn-info mb-4" href="{{url_for('tags',tagid=tag.id ,page = page_num)}}">{{ page_num }}</a>
+                          {% else %}
+                          <a class="btn btn-outline-info mb-4" href="{{url_for('tags',tagid=tag.id , page = page_num)}}">{{ page_num }}</a>
+                          {% endif %}
+                      {% else %}
+                          ...
+                      {% endif %}
+                      {% endfor %}
                     </div>
                     <div class="col-lg-4">
                       <h2 class="mb-4 text-primary font-weight-600">
                         Latest news
                       </h2>
+                      {% for article in latest %}
+                      {% if article in tag_articles %}
                       <div class="row">
                         <div class="col-sm-12">
                           <div class="border-bottom pb-4 pt-4">
                             <div class="row">
                               <div class="col-sm-8">
+                                <a style="text-decoration: none;" href="{{ url_for('post',id=article.id) }}">
                                 <h5 class="font-weight-600 mb-1">
-                                  Ways to stay social online while in self..
+                                  {{ article.title }}
                                 </h5>
+                                </a>
                                 <p class="fs-13 text-muted mb-0">
-                                  <span class="mr-2">Photo </span>10 Minutes ago
+                                  <span class="mr-2">Photo </span>{{ article.date_posted }}
                                 </p>
                               </div>
                               <div class="col-sm-4">
                                 <div class="rotate-img">
+                                  <a style="text-decoration: none;" href="{{ url_for('post',id=article.id) }}">
                                   <img
-                                    src="../assets/images/business/business_1.png"
-                                    alt="banner"
+                                    src="{{ article.cover_img }}"
                                     class="img-fluid"
                                   />
+                                  </a>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="border-bottom pb-4 pt-4">
-                            <div class="row">
-                              <div class="col-sm-8">
-                                <h5 class="font-weight-600 mb-1">
-                                  Premier League players join charity..
-                                </h5>
-                                <p class="fs-13 text-muted mb-0">
-                                  <span class="mr-2">Photo </span>10 Minutes ago
-                                </p>
-                              </div>
-                              <div class="col-sm-4">
-                                <div class="rotate-img">
-                                  <img
-                                    src="../assets/images/business/business_2.png"
-                                    alt="banner"
-                                    class="img-fluid"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="pt-4">
-                            <div class="row">
-                              <div class="col-sm-8">
-                                <h5 class="font-weight-600 mb-1">
-                                  UK Athletics board changed stance on..
-                                </h5>
-                                <p class="fs-13 text-muted mb-0">
-                                  <span class="mr-2">Photo </span>10 Minutes ago
-                                </p>
-                              </div>
-                              <div class="col-sm-4">
-                                <div class="rotate-img">
-                                  <img
-                                    src="../assets/images/business/business_3.png"
-                                    alt="banner"
-                                    class="img-fluid"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      {% endif %}
+                      {% endfor %}
                       <div class="trending">
                         <h2 class="mb-4 text-primary font-weight-600">
                           Trending
                         </h2>
+                        {% for article in trending %}
+                        {% if article in tag_articles %}
                         <div class="mb-4">
                           <div class="rotate-img">
+                            <a style="text-decoration: none;" href="{{ url_for('post',id=article.id) }}">
                             <img
-                              src="../assets/images/business/business_4.png"
-                              alt="banner"
+                              src="{{ article.cover_img }}"
                               class="img-fluid"
                             />
+                            </a>
                           </div>
+                          <a style="text-decoration: none;" href="{{ url_for('post',id=article.id) }}">
                           <h3 class="mt-3 font-weight-600">
-                            Virus Kills Member Of Advising Iran’s Supreme
+                            {{ article.title }}
                           </h3>
+                          </a>
                           <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
+                            <span class="mr-2">Photo </span>{{ article.date_posted.strftime('%d-%m-%Y') }}
                           </p>
                         </div>
-                        <div class="mb-4">
-                          <div class="rotate-img">
-                            <img
-                              src="../assets/images/business/business_5.png"
-                              alt="banner"
-                              class="img-fluid"
-                            />
-                          </div>
-                          <h3 class="mt-3 font-weight-600">
-                            Virus Kills Member Of Advising Iran’s Supreme
-                          </h3>
-                          <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                        </div>
-                        <div class="mb-4">
-                          <div class="rotate-img">
-                            <img
-                              src="../assets/images/business/business_6.png"
-                              alt="banner"
-                              class="img-fluid"
-                            />
-                          </div>
-                          <h3 class="mt-3 font-weight-600">
-                            Virus Kills Member Of Advising Iran’s Supreme
-                          </h3>
-                          <p class="fs-13 text-muted mb-0">
-                            <span class="mr-2">Photo </span>10 Minutes ago
-                          </p>
-                        </div>
+                        {% endif %}
+                        {% endfor %}
                       </div>
                     </div>
                   </div>
+                  {% endif %}
                 </div>
               </div>
             </div>

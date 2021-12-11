@@ -144,10 +144,12 @@
                               <div
                                 class="d-flex justify-content-between align-items-center"
                               >
+                              <a style="text-decoration: none;" href="{{ url_for('categories',category_id=video.category.id) }}">
                                 <span
                                   class="badge badge-danger font-weight-bold"
                                   >{{ video.category.categoryname }}</span
                                 >
+                              </a>
                                 <div class="video-icon">
                                   <i class="mdi mdi-play"></i>
                                 </div>

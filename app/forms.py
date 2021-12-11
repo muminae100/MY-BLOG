@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField, TextAreaField,SelectField
 from wtforms.validators import DataRequired,Length,Email,EqualTo,ValidationError
-from app.models import Categories, Users, Tags
+from app.models import Categories, Subscribers, Users, Tags
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
@@ -140,13 +140,18 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 
-class SearchForm(FlaskForm):
-    search_input = StringField('Search', validators=[DataRequired()])
-    submit = SubmitField('Send')
+class SubscribeForm(FlaskForm):
+    email = StringField('Your Email', validators=[DataRequired(),Email()])
+    submit = SubmitField('Subscribe')
+
+    def validate_email(self,email):
+        user = Subscribers.query.filter_by(email = email.data).first()
+        if user:
+            raise ValidationError('That email is already subscribed to our newsletters!')
 
 
 class ContactForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(),Email()])
+    email = StringField('Your email', validators=[DataRequired(),Email()])
     message = TextAreaField('Message', validators=[DataRequired()])
     submit = SubmitField('Send')
 
